@@ -37,7 +37,7 @@ module Admin
     end
 
     def reorder
-      @project = Project.find(params[:id])
+      @project = Project.find_by!(slug: params[:id])
       @project.update(position: params[:position])
       head :ok
     end
@@ -45,7 +45,7 @@ module Admin
     private
 
     def set_project
-      @project = Project.find(params[:id])
+      @project = Project.find_by!(slug: params[:id])
     end
 
     def project_params
