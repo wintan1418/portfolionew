@@ -1,0 +1,9 @@
+featured_testimonial:
+  author_name: John Doe
+  author_title: CTO
+  company: TestCo
+  content: Great developer!
+  rating: 5
+  featured: true
+  position: 1
+  relationship: client

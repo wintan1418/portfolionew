@@ -1,0 +1,14 @@
+New Contact Message
+===================
+
+Name: <%= @contact.name %>
+Email: <%= @contact.email %>
+<% if @contact.company.present? %>Company: <%= @contact.company %><% end %>
+<% if @contact.budget_range.present? %>Budget: <%= @contact.budget_range %><% end %>
+<% if @contact.subject.present? %>Subject: <%= @contact.subject %><% end %>
+
+Message:
+<%= @contact.message %>
+
+---
+Received on <%= Time.current.strftime("%B %d, %Y at %I:%M %p") %>

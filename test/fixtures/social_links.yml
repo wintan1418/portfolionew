@@ -1,0 +1,6 @@
+github:
+  platform: GitHub
+  url: https://github.com/test
+  icon: github
+  position: 1
+  visible: true

@@ -1,0 +1,16 @@
+published_post:
+  title: Test Published Post
+  slug: test-published-post
+  excerpt: A test excerpt
+  status: published
+  published_at: <%= 1.day.ago.to_fs(:db) %>
+  featured: true
+  reading_time: 5
+  category: rails
+
+draft_post:
+  title: Test Draft Post
+  slug: test-draft-post
+  excerpt: A draft excerpt
+  status: draft
+  category: rails

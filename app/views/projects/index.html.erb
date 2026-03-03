@@ -1,0 +1,25 @@
+<section class="py-24">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 animate-fade-in-up">
+      <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3">Portfolio</p>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white section-line-center">Projects</h1>
+      <p class="mt-4 text-base text-surface-500">
+        A showcase of my work and contributions
+      </p>
+    </div>
+
+    <% if @projects.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-controller="scroll-reveal">
+        <% @projects.each do |project| %>
+          <div class="reveal" data-controller="card-tilt">
+            <%= render "components/project_card", project: project %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center glass-hover rounded-2xl p-12">
+        <p class="text-surface-500">Projects coming soon.</p>
+      </div>
+    <% end %>
+  </div>
+</section>

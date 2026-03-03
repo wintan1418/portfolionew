@@ -1,0 +1,42 @@
+<%= render "admin/shared/form_errors", resource: skill %>
+
+<%= form_with(model: skill, url: url, class: "space-y-6 max-w-3xl") do |f| %>
+  <div class="glass rounded-xl p-6 space-y-5">
+    <div>
+      <%= f.label :name, class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <%= f.text_field :name, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+    </div>
+
+    <div>
+      <%= f.label :category, class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <%= f.select :category, ["Backend", "Frontend", "DevOps", "Tools", "Database", "Other"], { include_blank: "Select category" }, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+    </div>
+
+    <div>
+      <%= f.label :proficiency, class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <%= f.number_field :proficiency, in: 0..100, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+    </div>
+
+    <div>
+      <%= f.label :icon, class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <%= f.text_field :icon, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500", placeholder: "e.g. devicon-ruby-plain" %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div>
+        <%= f.label :position, class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.number_field :position, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+
+      <div class="flex items-center pt-6">
+        <%= f.check_box :featured, class: "rounded border-surface-700 bg-surface-800 text-primary-600 focus:ring-primary-500 mr-2" %>
+        <%= f.label :featured, "Featured skill", class: "text-sm text-surface-300" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <%= f.submit skill.new_record? ? "Create Skill" : "Update Skill", class: "px-6 py-2.5 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors cursor-pointer" %>
+    <%= link_to "Cancel", admin_skills_path, class: "text-sm text-surface-400 hover:text-white transition-colors" %>
+  </div>
+<% end %>

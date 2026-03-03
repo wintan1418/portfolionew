@@ -1,0 +1,42 @@
+<% content_for(:page_title) { "Education" } %>
+
+<div class="flex items-center justify-between mb-6">
+  <h2 class="text-xl font-bold text-white">Education</h2>
+  <%= link_to "New Education", new_admin_education_path, class: "px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors" %>
+</div>
+
+<div class="glass rounded-xl overflow-hidden">
+  <% if @educations.any? %>
+    <table class="w-full">
+      <thead>
+        <tr class="border-b border-surface-800">
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Institution</th>
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Degree</th>
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Field of Study</th>
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Dates</th>
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @educations.each do |education| %>
+          <tr class="border-b border-surface-800">
+            <td class="px-6 py-4 text-sm text-surface-100"><%= education.institution %></td>
+            <td class="px-6 py-4 text-sm text-surface-300"><%= education.degree %></td>
+            <td class="px-6 py-4 text-sm text-surface-300"><%= education.field_of_study %></td>
+            <td class="px-6 py-4 text-sm text-surface-300">
+              <%= education.start_date&.strftime("%b %Y") %> &mdash; <%= education.end_date&.strftime("%b %Y") || "Present" %>
+            </td>
+            <td class="px-6 py-4 text-sm space-x-3">
+              <%= link_to "Edit", edit_admin_education_path(education), class: "text-primary-400 hover:text-primary-300 text-sm" %>
+              <%= button_to "Delete", admin_education_path(education), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "text-red-400 hover:text-red-300 text-sm" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="p-8 text-center">
+      <p class="text-surface-400">No education entries yet.</p>
+    </div>
+  <% end %>
+</div>

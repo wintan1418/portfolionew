@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Admin | Wintan Portfolio</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-surface-950 text-surface-100 min-h-screen antialiased font-sans">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <%= render "admin/shared/sidebar" %>
+
+      <!-- Main Content -->
+      <div class="flex-1 ml-64">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-md border-b border-surface-800 px-6 py-4">
+          <div class="flex items-center justify-between">
+            <h1 class="text-lg font-semibold"><%= yield :page_title %></h1>
+            <div class="flex items-center gap-4">
+              <%= link_to root_path, class: "text-sm text-surface-400 hover:text-white transition-colors", target: "_blank" do %>
+                View Site &rarr;
+              <% end %>
+              <%= button_to "Logout", session_path, method: :delete, class: "text-sm text-surface-400 hover:text-red-400 transition-colors" %>
+            </div>
+          </div>
+        </header>
+
+        <!-- Flash Messages -->
+        <% if notice %>
+          <div class="mx-6 mt-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 px-4 py-3 rounded-lg text-sm">
+            <%= notice %>
+          </div>
+        <% end %>
+
+        <% if alert %>
+          <div class="mx-6 mt-4 bg-red-500/10 border border-red-500/20 text-red-300 px-4 py-3 rounded-lg text-sm">
+            <%= alert %>
+          </div>
+        <% end %>
+
+        <!-- Page Content -->
+        <div class="p-6">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

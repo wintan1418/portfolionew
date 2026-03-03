@@ -1,0 +1,86 @@
+<%= render "admin/shared/form_errors", resource: project %>
+
+<%= form_with(model: project, url: url, class: "space-y-6 max-w-3xl") do |f| %>
+  <div class="glass rounded-xl p-6 space-y-5">
+    <div>
+      <%= f.label :title, class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <%= f.text_field :title, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+    </div>
+
+    <div>
+      <%= f.label :slug, class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <%= f.text_field :slug, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500", placeholder: "Leave blank to auto-generate" %>
+    </div>
+
+    <div>
+      <%= f.label :summary, class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <%= f.text_area :summary, rows: 3, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div>
+        <%= f.label :live_url, "Live URL", class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.url_field :live_url, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+
+      <div>
+        <%= f.label :github_url, "GitHub URL", class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.url_field :github_url, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :tech_stack, "Tech Stack (comma separated)", class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <%= f.text_field :tech_stack, value: Array(project.tech_stack).join(", "), class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500", placeholder: "Ruby, Rails, PostgreSQL" %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div>
+        <%= f.label :status, class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.select :status, [["Completed", "completed"], ["In Progress", "in_progress"], ["Archived", "archived"]], {}, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+
+      <div>
+        <%= f.label :project_type, "Type", class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.select :project_type, [["Personal", "personal"], ["Client", "client"], ["Open Source", "open_source"]], {}, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+
+      <div>
+        <%= f.label :completed_on, class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.date_field :completed_on, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div>
+        <%= f.label :position, class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.number_field :position, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+
+      <div class="flex items-center pt-6">
+        <%= f.check_box :featured, class: "rounded border-surface-700 bg-surface-800 text-primary-600 focus:ring-primary-500 mr-2" %>
+        <%= f.label :featured, "Featured project", class: "text-sm text-surface-300" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :cover_image, class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <% if project.cover_image.attached? %>
+        <div class="mb-2">
+          <%= image_tag project.cover_image, class: "h-20 rounded-lg object-cover" %>
+        </div>
+      <% end %>
+      <%= f.file_field :cover_image, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:bg-surface-700 file:text-surface-300" %>
+    </div>
+
+    <div>
+      <%= f.label :body, class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <%= f.rich_text_area :body, class: "w-full rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <%= f.submit project.new_record? ? "Create Project" : "Update Project", class: "px-6 py-2.5 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors cursor-pointer" %>
+    <%= link_to "Cancel", admin_projects_path, class: "text-sm text-surface-400 hover:text-white transition-colors" %>
+  </div>
+<% end %>

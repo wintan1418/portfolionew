@@ -1,0 +1,10 @@
+active_subscriber:
+  email: subscriber@test.com
+  name: Sub User
+  status: active
+  token: test_token_123
+
+unsubscribed:
+  email: unsub@test.com
+  status: unsubscribed
+  token: unsub_token_456

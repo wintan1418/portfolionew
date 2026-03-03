@@ -1,0 +1,5 @@
+rails:
+  name: Ruby on Rails
+  slug: ruby-on-rails
+  color: "#CC0000"
+  position: 1

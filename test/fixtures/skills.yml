@@ -1,0 +1,13 @@
+rails_skill:
+  name: Ruby on Rails
+  category: Backend
+  proficiency: 95
+  featured: true
+  position: 1
+
+react_skill:
+  name: React
+  category: Frontend
+  proficiency: 85
+  featured: true
+  position: 2

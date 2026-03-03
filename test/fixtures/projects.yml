@@ -1,0 +1,19 @@
+featured_project:
+  title: Test Project
+  slug: test-project
+  summary: A test project summary
+  tech_stack: "{Rails,React}"
+  featured: true
+  position: 1
+  status: completed
+  project_type: personal
+
+second_project:
+  title: Second Project
+  slug: second-project
+  summary: Another project
+  tech_stack: "{Node.js}"
+  featured: false
+  position: 2
+  status: active
+  project_type: personal

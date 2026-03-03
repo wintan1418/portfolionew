@@ -1,0 +1,9 @@
+default:
+  first_name: Test
+  last_name: User
+  headline: Test Developer
+  bio: A test bio
+  email: test@test.com
+  location: Test City
+  available_for_hire: true
+  availability_text: Available

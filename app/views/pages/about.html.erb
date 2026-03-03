@@ -1,0 +1,164 @@
+<% content_for(:title) { "About" } %>
+
+<section class="pt-32 pb-24">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+    <!-- Hero area: Photo + Bio side by side -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-start">
+
+      <!-- Photo column -->
+      <div class="lg:col-span-2 animate-fade-in">
+        <div class="relative">
+          <div class="relative rounded-3xl overflow-hidden border border-surface-800 photo-glow">
+            <% if @profile.avatar.attached? %>
+              <%= image_tag @profile.avatar, class: "w-full aspect-[3/4] object-cover object-top" %>
+            <% else %>
+              <img src="/images/juwon.jpg" alt="<%= @profile.full_name %>" class="w-full aspect-[3/4] object-cover object-top">
+            <% end %>
+            <div class="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/50 to-transparent"></div>
+          </div>
+          <!-- Name tag -->
+          <div class="absolute -bottom-4 left-6 right-6 glass rounded-2xl px-5 py-4">
+            <h1 class="text-lg font-bold text-white"><%= @profile.full_name %></h1>
+            <p class="text-primary-400 text-sm font-medium"><%= @profile.headline %></p>
+          </div>
+        </div>
+
+        <!-- Quick info below photo -->
+        <div class="mt-12 space-y-3">
+          <% if @profile.location.present? %>
+            <div class="flex items-center gap-3 text-sm text-surface-400">
+              <svg class="w-4 h-4 text-surface-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+              <%= @profile.location %>
+            </div>
+          <% end %>
+          <% if @profile.email.present? %>
+            <div class="flex items-center gap-3 text-sm text-surface-400">
+              <svg class="w-4 h-4 text-surface-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <%= @profile.email %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-8 flex flex-col gap-3">
+          <% if @profile.resume_pdf.attached? %>
+            <%= link_to rails_blob_path(@profile.resume_pdf, disposition: "attachment"), class: "inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-all" do %>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Download Resume
+            <% end %>
+          <% end %>
+          <%= link_to contact_path, class: "inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-surface-700 text-white text-sm font-medium hover:border-surface-500 hover:bg-surface-900 transition-all" do %>
+            Get in Touch
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Bio column -->
+      <div class="lg:col-span-3">
+        <div class="animate-fade-in-up" style="animation-delay: 0.15s; opacity: 0;">
+          <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3">About Me</p>
+          <h2 class="text-3xl font-extrabold text-white section-line">The Person Behind the Code</h2>
+        </div>
+
+        <div class="mt-8 text-surface-300 leading-relaxed space-y-5 animate-fade-in-up" style="animation-delay: 0.3s; opacity: 0;">
+          <% if @profile.about_rich.present? %>
+            <div class="prose prose-invert max-w-none prose-p:text-surface-300 prose-p:leading-relaxed">
+              <%= @profile.about_rich %>
+            </div>
+          <% elsif @profile.about.present? %>
+            <% @profile.about.split("\n\n").each do |paragraph| %>
+              <p><%= paragraph %></p>
+            <% end %>
+          <% else %>
+            <p><%= @profile.bio %></p>
+          <% end %>
+        </div>
+
+        <!-- What I do section -->
+        <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fade-in-up" style="animation-delay: 0.45s; opacity: 0;">
+          <div class="glass-hover rounded-2xl p-5">
+            <div class="w-10 h-10 rounded-xl bg-primary-600/15 flex items-center justify-center mb-3">
+              <svg class="w-5 h-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            </div>
+            <h3 class="text-white font-semibold text-sm">Backend Development</h3>
+            <p class="text-surface-500 text-xs mt-1 leading-relaxed">Ruby on Rails, APIs, databases, background jobs, and scalable architectures.</p>
+          </div>
+          <div class="glass-hover rounded-2xl p-5">
+            <div class="w-10 h-10 rounded-xl bg-primary-600/15 flex items-center justify-center mb-3">
+              <svg class="w-5 h-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <h3 class="text-white font-semibold text-sm">Frontend & UI</h3>
+            <p class="text-surface-500 text-xs mt-1 leading-relaxed">React, Hotwire, Tailwind CSS, responsive design, and smooth interactions.</p>
+          </div>
+          <div class="glass-hover rounded-2xl p-5">
+            <div class="w-10 h-10 rounded-xl bg-primary-600/15 flex items-center justify-center mb-3">
+              <svg class="w-5 h-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            </div>
+            <h3 class="text-white font-semibold text-sm">AI Integration</h3>
+            <p class="text-surface-500 text-xs mt-1 leading-relaxed">Building AI-powered features with OpenAI, LLMs, and intelligent automation.</p>
+          </div>
+          <div class="glass-hover rounded-2xl p-5">
+            <div class="w-10 h-10 rounded-xl bg-primary-600/15 flex items-center justify-center mb-3">
+              <svg class="w-5 h-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </div>
+            <h3 class="text-white font-semibold text-sm">DevOps & Deployment</h3>
+            <p class="text-surface-500 text-xs mt-1 leading-relaxed">Docker, CI/CD, cloud infrastructure, and production deployments.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills Section -->
+    <% if @skills.any? %>
+      <div class="mt-24" data-controller="scroll-reveal">
+        <div class="text-center mb-12">
+          <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3 reveal">Expertise</p>
+          <h2 class="text-2xl font-extrabold text-white reveal section-line-center">Technical Skills</h2>
+        </div>
+
+        <% @skills.each do |category, skills| %>
+          <div class="mb-10 reveal">
+            <h3 class="text-xs font-mono text-surface-500 uppercase tracking-[0.15em] mb-4"><%= category || "Other" %></h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <% skills.each do |skill| %>
+                <div class="glass-hover rounded-xl p-4">
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-medium text-white"><%= skill.name %></span>
+                    <span class="text-xs font-mono text-primary-400"><%= skill.proficiency %>%</span>
+                  </div>
+                  <div class="w-full bg-surface-800 rounded-full h-1">
+                    <div class="bg-gradient-to-r from-primary-600 to-primary-400 h-1 rounded-full" style="width: <%= skill.proficiency %>%"></div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Education -->
+    <% if @educations.any? %>
+      <div class="mt-20" data-controller="scroll-reveal">
+        <div class="text-center mb-12">
+          <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3 reveal">Background</p>
+          <h2 class="text-2xl font-extrabold text-white reveal section-line-center">Education</h2>
+        </div>
+        <div class="max-w-2xl mx-auto space-y-4">
+          <% @educations.each do |edu| %>
+            <div class="glass-hover rounded-2xl p-6 reveal">
+              <h3 class="text-white font-semibold"><%= edu.institution %></h3>
+              <% if edu.degree.present? || edu.field_of_study.present? %>
+                <p class="text-primary-400 text-sm font-medium mt-1"><%= [edu.degree, edu.field_of_study].compact.join(" in ") %></p>
+              <% end %>
+              <% if edu.start_date.present? %>
+                <p class="text-surface-500 text-xs font-mono mt-2 uppercase tracking-wider"><%= edu.start_date.strftime("%Y") %><%= " — #{edu.end_date.strftime('%Y')}" if edu.end_date.present? %></p>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>

@@ -1,0 +1,3 @@
+<% content_for(:page_title) { "Edit Social Link" } %>
+
+<%= render "form", social_link: @social_link, url: admin_social_link_path(@social_link) %>

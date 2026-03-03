@@ -1,0 +1,10 @@
+current_job:
+  company: Test Corp
+  role: Senior Developer
+  description: Test description
+  location: Remote
+  start_date: <%= 2.years.ago.to_date %>
+  current: true
+  employment_type: full-time
+  highlights: "{Built APIs,Led team}"
+  position: 1

@@ -1,0 +1,12 @@
+unread_contact:
+  name: Jane Smith
+  email: jane@test.com
+  subject: Test Subject
+  message: Hello, I have a project
+  status: unread
+
+read_contact:
+  name: Bob Smith
+  email: bob@test.com
+  message: Another message
+  status: read
