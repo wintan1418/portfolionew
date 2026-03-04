@@ -4,12 +4,13 @@
   <div class="glass rounded-xl p-6 space-y-5">
     <div>
       <%= f.label :platform, class: "block text-sm font-medium text-surface-300 mb-1" %>
-      <%= f.select :platform, [["GitHub", "github"], ["LinkedIn", "linkedin"], ["Twitter", "twitter"], ["YouTube", "youtube"], ["Website", "website"], ["Other", "other"]], { include_blank: "Select platform" }, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      <%= f.select :platform, [["GitHub", "github"], ["LinkedIn", "linkedin"], ["Twitter", "twitter"], ["YouTube", "youtube"], ["WhatsApp", "whatsapp"], ["Phone", "phone"], ["Email", "email"], ["Website", "website"], ["Other", "other"]], { include_blank: "Select platform" }, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
     </div>
 
     <div>
-      <%= f.label :url, "URL", class: "block text-sm font-medium text-surface-300 mb-1" %>
-      <%= f.url_field :url, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500", placeholder: "https://" %>
+      <%= f.label :url, "URL / Number", class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <p class="text-xs text-surface-500 mb-1">For WhatsApp/Phone use: https://wa.me/2348012345678 or tel:+2348012345678</p>
+      <%= f.text_field :url, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500", placeholder: "https:// or tel:+234..." %>
     </div>
 
     <div>
