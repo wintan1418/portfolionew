@@ -191,21 +191,11 @@
    ═══════════════════════════════════ */
 
 .section-line::after {
-  content: "";
-  display: block;
-  width: 48px;
-  height: 2px;
-  background: linear-gradient(90deg, #6366f1, #06b6d4);
-  margin-top: 12px;
+  display: none;
 }
 
 .section-line-center::after {
-  content: "";
-  display: block;
-  width: 48px;
-  height: 2px;
-  background: linear-gradient(90deg, #6366f1, #06b6d4);
-  margin: 12px auto 0;
+  display: none;
 }
 
 /* ═══════════════════════════════════
