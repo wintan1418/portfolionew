@@ -11,13 +11,13 @@
       <!-- Brand column -->
       <div class="md:col-span-5">
         <div class="flex items-center gap-3 mb-4">
-          <span class="text-lg font-extrabold text-white tracking-tight"><%= profile&.name&.split(' ')&.last&.upcase || "JUWON" %></span>
+          <span class="text-lg font-extrabold text-white tracking-tight"><%= profile&.last_name&.upcase || "JUWON" %></span>
           <span class="w-1 h-1 rounded-full bg-primary-500"></span>
-          <span class="text-[10px] font-mono text-surface-500 uppercase tracking-[0.2em]"><%= profile&.title&.split(' ')&.first || "Developer" %></span>
+          <span class="text-[10px] font-mono text-surface-500 uppercase tracking-[0.2em]"><%= profile&.headline&.split(' ')&.first || "Developer" %></span>
         </div>
 
         <p class="text-surface-400 text-sm leading-relaxed max-w-sm">
-          <%= profile&.tagline || "Full-Stack Software Engineer crafting production-grade applications with Ruby on Rails, modern JavaScript, and a touch of AI." %>
+          <%= profile&.bio.presence || "Full-Stack Software Engineer crafting production-grade applications with Ruby on Rails, modern JavaScript, and a touch of AI." %>
         </p>
 
         <!-- Social links -->
@@ -52,9 +52,10 @@
 
         <div class="space-y-3">
           <% email_link = social_links.find { |l| l.platform == "email" } %>
-          <a href="<%= email_link ? "mailto:#{email_link.url.gsub('mailto:', '')}" : "mailto:#{profile&.email || 'wintan1418@gmail.com'}" %>" class="flex items-center gap-3 text-sm text-surface-400 hover:text-white transition-colors duration-200">
+          <% footer_email = email_link ? email_link.url.gsub("mailto:", "") : (profile&.email.presence || "wintan1418@gmail.com") %>
+          <a href="mailto:<%= footer_email %>" class="flex items-center gap-3 text-sm text-surface-400 hover:text-white transition-colors duration-200">
             <svg class="w-4 h-4 text-surface-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            <%= email_link ? email_link.url.gsub("mailto:", "") : (profile&.email || "wintan1418@gmail.com") %>
+            <%= footer_email %>
           </a>
 
           <% phone_link = social_links.find { |l| l.platform == "phone" } %>
@@ -108,7 +109,7 @@
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/60"></span>
           </div>
           <p class="text-xs text-surface-500 font-mono">
-            <span class="text-primary-400">~</span> &copy; <%= Date.current.year %> <%= profile&.name || "Oluwadare Juwon" %> <span class="text-surface-600">|</span> All rights reserved
+            <span class="text-primary-400">~</span> &copy; <%= Date.current.year %> <%= profile&.full_name || "Oluwadare Juwon" %> <span class="text-surface-600">|</span> All rights reserved
           </p>
         </div>
         <p class="text-xs text-surface-500 font-mono flex items-center gap-1.5">
