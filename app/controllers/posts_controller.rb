@@ -3,8 +3,19 @@ class PostsController < ApplicationController
   allow_unauthenticated_access
 
   def index
-    @pagy, @posts = pagy(Post.recent, limit: 9)
-    @featured_post = Post.published.featured.order(published_at: :desc).first
+    posts = Post.recent
+
+    if params[:search].present?
+      posts = posts.where("title ILIKE :q OR excerpt ILIKE :q", q: "%#{params[:search]}%")
+    end
+
+    if params[:category].present?
+      @category = Category.find_by(slug: params[:category])
+      posts = posts.where(category: @category) if @category
+    end
+
+    @pagy, @posts = pagy(posts, limit: 9)
+    @featured_post = Post.published.featured.order(published_at: :desc).first unless params[:search].present? || params[:category].present?
     @categories = Category.ordered
     set_meta_tags(title: "Blog")
   end

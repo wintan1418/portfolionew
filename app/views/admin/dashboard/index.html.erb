@@ -1,7 +1,40 @@
 <% content_for(:page_title) { "Dashboard" } %>
 
+<!-- Analytics Stats -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+  <div class="glass rounded-xl p-6">
+    <div class="text-surface-400 text-sm">Total Views</div>
+    <div class="mt-2 text-2xl font-bold text-white"><%= number_with_delimiter(@total_views) %></div>
+    <div class="mt-1 text-xs text-surface-500">All time</div>
+  </div>
+
+  <div class="glass rounded-xl p-6">
+    <div class="text-surface-400 text-sm">Views Today</div>
+    <div class="mt-2 text-2xl font-bold text-white"><%= number_with_delimiter(@views_today) %></div>
+    <div class="mt-1 text-xs text-surface-500"><%= Date.current.strftime("%b %d, %Y") %></div>
+  </div>
+
+  <div class="glass rounded-xl p-6">
+    <div class="text-surface-400 text-sm">Views This Week</div>
+    <div class="mt-2 text-2xl font-bold text-white"><%= number_with_delimiter(@views_this_week) %></div>
+    <div class="mt-1 text-xs text-surface-500">Last 7 days</div>
+  </div>
+
+  <div class="glass rounded-xl p-6">
+    <div class="text-surface-400 text-sm">Subscribers</div>
+    <div class="mt-2 text-2xl font-bold text-white"><%= number_with_delimiter(@subscriber_count) %></div>
+    <%= link_to "View all", admin_subscribers_path, class: "mt-1 inline-block text-xs text-primary-400 hover:text-primary-300" %>
+  </div>
+
+  <div class="glass rounded-xl p-6">
+    <div class="text-surface-400 text-sm">Contacts</div>
+    <div class="mt-2 text-2xl font-bold text-white"><%= number_with_delimiter(@contacts_count) %></div>
+    <%= link_to "View all", admin_contacts_path, class: "mt-1 inline-block text-xs text-primary-400 hover:text-primary-300" %>
+  </div>
+</div>
+
+<!-- Content Stats -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-  <!-- Stats Cards -->
   <div class="glass rounded-xl p-6">
     <div class="text-surface-400 text-sm">Profile</div>
     <div class="mt-2 text-2xl font-bold text-white"><%= @profile.full_name %></div>
@@ -11,20 +44,72 @@
 
   <div class="glass rounded-xl p-6">
     <div class="text-surface-400 text-sm">Projects</div>
-    <div class="mt-2 text-2xl font-bold text-white"><%= Project.count rescue 0 %></div>
+    <div class="mt-2 text-2xl font-bold text-white"><%= @projects_count %></div>
     <%= link_to "Manage", admin_projects_path, class: "mt-3 inline-block text-xs text-primary-400 hover:text-primary-300" %>
   </div>
 
   <div class="glass rounded-xl p-6">
     <div class="text-surface-400 text-sm">Blog Posts</div>
-    <div class="mt-2 text-2xl font-bold text-white"><%= Post.count rescue 0 %></div>
+    <div class="mt-2 text-2xl font-bold text-white"><%= @posts_count %></div>
     <%= link_to "Manage", admin_posts_path, class: "mt-3 inline-block text-xs text-primary-400 hover:text-primary-300" %>
   </div>
 
   <div class="glass rounded-xl p-6">
-    <div class="text-surface-400 text-sm">Contacts</div>
-    <div class="mt-2 text-2xl font-bold text-white"><%= Contact.count rescue 0 %></div>
-    <%= link_to "View", admin_contacts_path, class: "mt-3 inline-block text-xs text-primary-400 hover:text-primary-300" %>
+    <div class="text-surface-400 text-sm">Monthly Views</div>
+    <div class="mt-2 text-2xl font-bold text-white"><%= number_with_delimiter(@views_this_month) %></div>
+    <div class="mt-1 text-xs text-surface-500">Last 30 days</div>
+  </div>
+</div>
+
+<!-- Popular Pages & Recent Contacts -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+  <!-- Popular Pages -->
+  <div class="glass rounded-xl p-6">
+    <h3 class="text-lg font-semibold text-white mb-4">Popular Pages</h3>
+    <% if @popular_pages.any? %>
+      <div class="space-y-3">
+        <% @popular_pages.each do |path, count| %>
+          <div class="flex items-center justify-between py-2 border-b border-surface-800 last:border-0">
+            <span class="text-sm text-surface-300 truncate mr-4"><%= path %></span>
+            <span class="text-sm font-medium text-primary-400 shrink-0"><%= number_with_delimiter(count) %> views</span>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-surface-500 text-sm">No page views recorded yet.</p>
+    <% end %>
+  </div>
+
+  <!-- Recent Contacts -->
+  <div class="glass rounded-xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold text-white">Recent Contacts</h3>
+      <%= link_to "View all", admin_contacts_path, class: "text-xs text-primary-400 hover:text-primary-300" %>
+    </div>
+    <% if @recent_contacts.any? %>
+      <div class="space-y-3">
+        <% @recent_contacts.each do |contact| %>
+          <div class="flex items-start justify-between py-2 border-b border-surface-800 last:border-0">
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-medium text-surface-100 truncate"><%= contact.name %></p>
+              <p class="text-xs text-surface-500"><%= contact.email %></p>
+              <% if contact.subject.present? %>
+                <p class="text-xs text-surface-400 mt-0.5 truncate"><%= contact.subject %></p>
+              <% end %>
+            </div>
+            <div class="ml-4 shrink-0">
+              <% if contact.status == "unread" %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-500/20 text-primary-300">New</span>
+              <% else %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-surface-700 text-surface-400">Read</span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-surface-500 text-sm">No contacts yet.</p>
+    <% end %>
   </div>
 </div>
 

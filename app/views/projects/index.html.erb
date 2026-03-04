@@ -8,18 +8,59 @@
       </p>
     </div>
 
-    <% if @projects.any? %>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-controller="scroll-reveal">
-        <% @projects.each do |project| %>
-          <div class="reveal" data-controller="card-tilt">
-            <%= render "components/project_card", project: project %>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="text-center glass-hover rounded-2xl p-12">
-        <p class="text-surface-500">Projects coming soon.</p>
-      </div>
+    <!-- Filter UI -->
+    <div class="mb-10 animate-fade-in-up" style="animation-delay: 0.2s; opacity: 0;">
+      <!-- Type filter pills -->
+      <% if @project_types.any? %>
+        <div class="flex flex-wrap justify-center gap-2 mb-4">
+          <span class="text-xs font-mono text-surface-500 uppercase tracking-wider self-center mr-2">Type:</span>
+          <%= link_to "All", projects_path(tech: params[:tech].presence),
+              data: { turbo_frame: "projects" },
+              class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{params[:type].blank? ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
+          <% @project_types.each do |type| %>
+            <%= link_to type.titleize, projects_path(type: type, tech: params[:tech].presence),
+                data: { turbo_frame: "projects" },
+                class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{params[:type] == type ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Tech filter pills -->
+      <% if @all_tech.any? %>
+        <div class="flex flex-wrap justify-center gap-2">
+          <span class="text-xs font-mono text-surface-500 uppercase tracking-wider self-center mr-2">Tech:</span>
+          <%= link_to "All", projects_path(type: params[:type].presence),
+              data: { turbo_frame: "projects" },
+              class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{params[:tech].blank? ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
+          <% @all_tech.first(12).each do |tech| %>
+            <%= link_to tech, projects_path(tech: tech, type: params[:type].presence),
+                data: { turbo_frame: "projects" },
+                class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{params[:tech] == tech ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <%= turbo_frame_tag "projects" do %>
+      <% if @projects.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-controller="scroll-reveal">
+          <% @projects.each do |project| %>
+            <div class="reveal" data-controller="card-tilt">
+              <%= render "components/project_card", project: project %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center glass-hover rounded-2xl p-12">
+          <p class="text-surface-500">
+            <% if params[:type].present? || params[:tech].present? %>
+              No projects found matching your filters. Try a different combination.
+            <% else %>
+              Projects coming soon.
+            <% end %>
+          </p>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </section>

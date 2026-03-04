@@ -2,8 +2,20 @@ class ProjectsController < ApplicationController
   allow_unauthenticated_access
 
   def index
-    @projects = Project.ordered
+    projects = Project.ordered
+
+    if params[:type].present?
+      projects = projects.where(project_type: params[:type])
+    end
+
+    if params[:tech].present?
+      projects = projects.where("? = ANY(tech_stack)", params[:tech])
+    end
+
+    @projects = projects
     @featured_projects = Project.featured.ordered.limit(6)
+    @all_tech = Project.ordered.pluck(:tech_stack).compact.flatten.reject(&:blank?).uniq.sort
+    @project_types = Project.ordered.pluck(:project_type).compact.reject(&:blank?).uniq.sort
     set_meta_tags(title: "Projects")
   end
 

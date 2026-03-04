@@ -1,0 +1,10 @@
+<h2><%= @newsletter.subject %></h2>
+
+<div style="line-height: 1.6; color: #3f3f46; font-size: 15px;">
+  <%= simple_format(@newsletter.body) %>
+</div>
+
+<p style="margin-top: 32px; font-size: 12px; color: #888;">
+  You're receiving this because you subscribed to <%= @profile&.full_name || "Wintan" %>'s newsletter.
+  <a href="<%= @unsubscribe_url %>" style="color: #6366f1;">Unsubscribe</a>
+</p>

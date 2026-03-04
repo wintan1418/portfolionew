@@ -35,6 +35,15 @@ module Admin
       redirect_to admin_testimonials_path, notice: "Testimonial deleted."
     end
 
+    def generate_link
+      @testimonial = Testimonial.create!(
+        author_name: "Pending",
+        content: "Pending submission",
+        status: "pending"
+      )
+      redirect_to admin_testimonials_path, notice: "Request link: #{testimonial_request_url(token: @testimonial.token)}"
+    end
+
     private
 
     def set_testimonial
@@ -42,7 +51,7 @@ module Admin
     end
 
     def testimonial_params
-      params.require(:testimonial).permit(:author_name, :author_title, :company, :content, :rating, :featured, :position, :relationship, :author_avatar)
+      params.require(:testimonial).permit(:author_name, :author_title, :company, :content, :rating, :featured, :position, :relationship, :author_avatar, :status)
     end
   end
 end

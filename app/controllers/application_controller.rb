@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Authentication
   include Pagy::Backend
+  include Trackable
 
   allow_browser versions: :modern
 

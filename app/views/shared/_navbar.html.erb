@@ -13,6 +13,13 @@
           <span class="w-1 h-1 rounded-full bg-primary-500"></span>
           <span class="text-[10px] font-mono text-surface-500 uppercase tracking-[0.2em]">Developer</span>
         </div>
+        <% nav_profile = Profile.instance rescue nil %>
+        <% if nav_profile&.available_for_hire %>
+          <span class="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-400 uppercase tracking-wider">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Available
+          </span>
+        <% end %>
       <% end %>
 
       <!-- Desktop Links -->
@@ -20,6 +27,7 @@
         <%= nav_link_pill "Home", root_path %>
         <%= nav_link_pill "About", about_path %>
         <%= nav_link_pill "Projects", projects_path %>
+        <%= nav_link_pill "Services", services_path %>
         <%= nav_link_pill "Blog", blog_path %>
         <%= nav_link_pill "Contact", contact_path %>
       </div>
@@ -65,6 +73,7 @@
       <%= mobile_nav_link "Home", root_path %>
       <%= mobile_nav_link "About", about_path %>
       <%= mobile_nav_link "Projects", projects_path %>
+      <%= mobile_nav_link "Services", services_path %>
       <%= mobile_nav_link "Blog", blog_path %>
       <%= mobile_nav_link "Contact", contact_path %>
 

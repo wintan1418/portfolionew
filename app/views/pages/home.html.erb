@@ -203,13 +203,13 @@
       <div data-tabs-target="panel" data-tab="<%= category %>" class="<%= 'hidden' unless i == 0 %>">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
           <% skills.each do |skill| %>
-            <div class="group glass-hover rounded-xl p-4 reveal">
+            <div class="group glass-hover rounded-xl p-4 reveal" data-controller="skill-bar" data-skill-bar-width-value="<%= skill.proficiency %>">
               <div class="flex items-center justify-between mb-3">
                 <span class="text-sm font-medium text-white"><%= skill.name %></span>
                 <span class="text-xs font-mono text-primary-400"><%= skill.proficiency %>%</span>
               </div>
               <div class="w-full bg-surface-800 rounded-full h-1">
-                <div class="bg-gradient-to-r from-primary-500 to-primary-400 h-1 rounded-full transition-all duration-1000" style="width: <%= skill.proficiency %>%"></div>
+                <div class="bg-gradient-to-r from-primary-500 to-primary-400 h-1 rounded-full" style="width: 0%" data-skill-bar-target="bar"></div>
               </div>
             </div>
           <% end %>

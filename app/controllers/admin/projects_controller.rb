@@ -52,7 +52,9 @@ module Admin
       params.require(:project).permit(
         :title, :slug, :summary, :live_url, :github_url,
         :featured, :position, :completed_on, :status, :project_type,
-        :cover_image, :body, tech_stack: [], images: []
+        :cover_image, :body,
+        :challenge, :solution, :results, :client_name, :client_role, :metrics,
+        tech_stack: [], images: []
       )
     end
   end

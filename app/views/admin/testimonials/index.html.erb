@@ -2,7 +2,10 @@
 
 <div class="flex items-center justify-between mb-6">
   <h2 class="text-xl font-bold text-white">Testimonials</h2>
-  <%= link_to "New Testimonial", new_admin_testimonial_path, class: "px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors" %>
+  <div class="flex items-center gap-3">
+    <%= button_to "Generate Request Link", generate_link_admin_testimonials_path, method: :post, class: "px-4 py-2 rounded-lg glass text-white text-sm font-medium hover:bg-white/10 transition-colors" %>
+    <%= link_to "New Testimonial", new_admin_testimonial_path, class: "px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors" %>
+  </div>
 </div>
 
 <div class="glass rounded-xl overflow-hidden">
@@ -13,6 +16,7 @@
           <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Author</th>
           <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Title</th>
           <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Company</th>
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Status</th>
           <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Featured</th>
           <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Actions</th>
         </tr>
@@ -23,6 +27,18 @@
             <td class="px-6 py-4 text-sm text-surface-100"><%= testimonial.author_name %></td>
             <td class="px-6 py-4 text-sm text-surface-300"><%= testimonial.author_title %></td>
             <td class="px-6 py-4 text-sm text-surface-300"><%= testimonial.company %></td>
+            <td class="px-6 py-4 text-sm">
+              <% case testimonial.status %>
+              <% when "approved" %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-500/20 text-green-300">Approved</span>
+              <% when "pending" %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-300">Pending</span>
+              <% when "rejected" %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-500/20 text-red-300">Rejected</span>
+              <% else %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-surface-700 text-surface-400"><%= testimonial.status&.humanize || "N/A" %></span>
+              <% end %>
+            </td>
             <td class="px-6 py-4 text-sm">
               <% if testimonial.featured? %>
                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-500/20 text-primary-300">Featured</span>

@@ -1,0 +1,7 @@
+<%= @newsletter.subject %>
+
+<%= @newsletter.body %>
+
+---
+You're receiving this because you subscribed to <%= @profile&.full_name || "Wintan" %>'s newsletter.
+Unsubscribe: <%= @unsubscribe_url %>

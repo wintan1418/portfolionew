@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   # Public routes
   root "pages#home"
   get "about", to: "pages#about"
+  get "services", to: "pages#services"
 
   resources :projects, only: [ :index, :show ], param: :slug
 
@@ -31,6 +32,9 @@ Rails.application.routes.draw do
   # Newsletter
   post "subscribe", to: "subscribers#create"
   get "unsubscribe/:token", to: "subscribers#unsubscribe", as: :unsubscribe
+
+  # Testimonial Requests (public)
+  resources :testimonial_requests, only: [ :new, :update ], param: :token
 
   # Sitemap
   get "sitemap", to: "sitemap#index", defaults: { format: :xml }, as: :sitemap
@@ -58,7 +62,18 @@ Rails.application.routes.draw do
     end
 
     resources :categories
-    resources :testimonials
+
+    resources :testimonials do
+      collection do
+        post :generate_link
+      end
+    end
+
+    resources :newsletters do
+      member do
+        post :send_newsletter
+      end
+    end
 
     resources :contacts, only: [ :index, :show, :update, :destroy ] do
       member { patch :mark_read }

@@ -1,0 +1,61 @@
+<% content_for(:page_title) { "Newsletters" } %>
+
+<div class="flex items-center justify-between mb-6">
+  <h2 class="text-xl font-bold text-white">Newsletters</h2>
+  <%= link_to "New Newsletter", new_admin_newsletter_path, class: "px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors" %>
+</div>
+
+<div class="glass rounded-xl overflow-hidden">
+  <% if @newsletters.any? %>
+    <table class="w-full">
+      <thead>
+        <tr class="border-b border-surface-800">
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Subject</th>
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Status</th>
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Recipients</th>
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Date</th>
+          <th class="text-left text-xs font-medium text-surface-500 uppercase tracking-wider px-6 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @newsletters.each do |newsletter| %>
+          <tr class="border-b border-surface-800">
+            <td class="px-6 py-4 text-sm text-surface-100"><%= newsletter.subject %></td>
+            <td class="px-6 py-4 text-sm">
+              <% if newsletter.sent? %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-500/20 text-green-300">Sent</span>
+              <% else %>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-300">Draft</span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 text-sm text-surface-300">
+              <% if newsletter.sent? %>
+                <%= newsletter.recipients_count %>
+              <% else %>
+                &mdash;
+              <% end %>
+            </td>
+            <td class="px-6 py-4 text-sm text-surface-300">
+              <% if newsletter.sent_at %>
+                <%= newsletter.sent_at.strftime("%b %d, %Y %I:%M %p") %>
+              <% else %>
+                <%= newsletter.created_at.strftime("%b %d, %Y") %>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 text-sm space-x-3">
+              <% if newsletter.draft? %>
+                <%= link_to "Edit", edit_admin_newsletter_path(newsletter), class: "text-primary-400 hover:text-primary-300 text-sm" %>
+                <%= button_to "Send", send_newsletter_admin_newsletter_path(newsletter), method: :post, data: { turbo_confirm: "Send this newsletter to all active subscribers?" }, class: "text-green-400 hover:text-green-300 text-sm" %>
+                <%= button_to "Delete", admin_newsletter_path(newsletter), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "text-red-400 hover:text-red-300 text-sm" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="p-8 text-center">
+      <p class="text-surface-400">No newsletters yet.</p>
+    </div>
+  <% end %>
+</div>

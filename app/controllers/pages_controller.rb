@@ -33,4 +33,12 @@ class PagesController < ApplicationController
       description: "Learn more about #{@profile.full_name}, a full-stack software engineer with expertise in building modern web applications."
     )
   end
+
+  def services
+    @profile = Profile.instance
+    set_meta_tags(
+      title: "Services",
+      description: "Full-stack development, AI integration, and technical consulting services by #{@profile.full_name}."
+    )
+  end
 end
