@@ -48,7 +48,7 @@
       <!-- Featured Post -->
       <% if defined?(@featured_post) && @featured_post && !@category %>
         <div class="mb-12 animate-fade-in-up" style="animation-delay: 0.4s; opacity: 0;">
-          <%= link_to blog_post_path(@featured_post.slug), class: "block glass-hover rounded-2xl overflow-hidden group transition-all" do %>
+          <%= link_to blog_post_path(@featured_post.slug), data: { turbo_frame: "_top" }, class: "block glass-hover rounded-2xl overflow-hidden group transition-all" do %>
             <div class="grid grid-cols-1 md:grid-cols-2">
               <div class="aspect-video md:aspect-auto bg-surface-900 overflow-hidden">
                 <% if @featured_post.cover_image.attached? %>

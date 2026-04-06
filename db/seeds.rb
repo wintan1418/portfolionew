@@ -284,6 +284,30 @@ posts_data = [
     title: "Why I Rebuilt My Portfolio with Rails 8",
     slug: "why-i-rebuilt-my-portfolio-with-rails-8",
     excerpt: "After years of using React for my personal site, I switched to Rails 8. Here's why — and what I learned along the way.",
+    body: <<~HTML,
+      <h2>The Problem with My Old Stack</h2>
+      <p>For years, my portfolio ran on a React SPA with a headless CMS. It was fast, flashy, and... a pain to maintain. Every dependency update felt like defusing a bomb. I spent more time wrestling with Webpack configs than actually writing content.</p>
+
+      <h2>Why Rails 8?</h2>
+      <p>Rails 8 changed the game. With Hotwire (Turbo + Stimulus), I get the snappy, SPA-like experience without shipping megabytes of JavaScript. Solid Queue handles background jobs without Redis. Solid Cache and Solid Cable mean fewer moving parts in production. It's the full package.</p>
+
+      <h2>The Stack</h2>
+      <p>Here's what I'm running:</p>
+      <ul>
+        <li><strong>Rails 8.0.4</strong> with Ruby 3.4</li>
+        <li><strong>Hotwire</strong> for interactive UI without a JS framework</li>
+        <li><strong>Tailwind CSS v4</strong> for styling</li>
+        <li><strong>PostgreSQL</strong> for the database</li>
+        <li><strong>Propshaft</strong> as the asset pipeline</li>
+        <li><strong>Importmap</strong> — no Node.js, no npm, no bundler headaches</li>
+      </ul>
+
+      <h2>What I Gained</h2>
+      <p>The result? A portfolio that loads in under a second, is trivial to deploy, and lets me focus on content rather than tooling. The admin panel gives me full control over every piece of content — blog posts, projects, skills, testimonials — all managed through a clean interface I built myself.</p>
+
+      <h2>Key Takeaway</h2>
+      <p>Sometimes the best technology choice isn't the newest or the most popular — it's the one that lets you ship and iterate fastest. For a content-heavy personal site, Rails 8 with Hotwire is hard to beat.</p>
+    HTML
     status: "published",
     published_at: 2.days.ago,
     featured: true,
@@ -296,6 +320,29 @@ posts_data = [
     title: "Building an AI-Powered Resume Builder: Lessons from RezumFit",
     slug: "building-rezumfit-ai-resume-builder",
     excerpt: "The story behind RezumFit — from idea to production. How I integrated OpenAI's API into a Rails application to create smart, ATS-optimized resumes.",
+    body: <<~HTML,
+      <h2>The Idea</h2>
+      <p>Job hunting is stressful enough without having to tailor your resume for every application. I wanted to build something that could take a job description, analyze it, and generate an ATS-optimized resume automatically. That's how RezumFit was born.</p>
+
+      <h2>Choosing the Stack</h2>
+      <p>I went with Ruby on Rails for the backend — it's my home turf and perfect for rapid prototyping. For the AI layer, I integrated OpenAI's GPT API to handle the heavy lifting: parsing job descriptions, extracting keywords, and generating tailored bullet points.</p>
+
+      <h2>The Architecture</h2>
+      <p>The core flow is straightforward:</p>
+      <ol>
+        <li>User uploads their base resume and pastes a job description</li>
+        <li>The app sends both to OpenAI's API with a carefully crafted prompt</li>
+        <li>GPT analyzes the job requirements and rewrites resume sections to match</li>
+        <li>The user reviews, edits, and exports as PDF</li>
+      </ol>
+
+      <h2>Challenges Along the Way</h2>
+      <p><strong>Prompt engineering was the hardest part.</strong> Getting GPT to produce consistent, professional resume content required dozens of iterations. Too creative and it sounded fake. Too conservative and it barely changed anything. Finding the sweet spot took weeks of testing with real job postings.</p>
+      <p><strong>Rate limiting and costs.</strong> OpenAI API calls aren't free. I implemented Solid Queue for background processing and added smart caching so similar job descriptions don't trigger redundant API calls.</p>
+
+      <h2>Results</h2>
+      <p>RezumFit helped me understand the real-world challenges of building AI-powered products: managing API costs, handling unpredictable outputs, and designing UX around async operations. These lessons carry over to every AI project I tackle now.</p>
+    HTML
     status: "published",
     published_at: 1.week.ago,
     featured: false,
@@ -308,6 +355,30 @@ posts_data = [
     title: "From Nigeria to the World: My Software Engineering Journey",
     slug: "my-software-engineering-journey",
     excerpt: "Six years of coding, 164+ GitHub repos, and countless lessons. Here's my story as a self-taught developer from Nigeria building for the global market.",
+    body: <<~HTML,
+      <h2>Where It All Started</h2>
+      <p>I wrote my first line of code in 2018. No computer science degree, no bootcamp — just a laptop, an internet connection, and an overwhelming curiosity about how things work on the web. Growing up in Nigeria, the tech ecosystem was still emerging, but the energy was undeniable.</p>
+
+      <h2>The Self-Teaching Years</h2>
+      <p>I started with HTML and CSS, moved to JavaScript, and then discovered Ruby on Rails. Rails clicked for me immediately — the convention-over-configuration philosophy meant I could build real things fast. Within months, I was shipping side projects and contributing to open source.</p>
+
+      <h2>Building in Public</h2>
+      <p>Over six years, I've accumulated over 164 GitHub repositories. Not all of them are masterpieces — some are experiments, some are abandoned prototypes, and some are tools I still use daily. But each one taught me something. The key was never stopping, even when imposter syndrome hit hard.</p>
+
+      <h2>Going Global</h2>
+      <p>The beauty of software engineering is that your location doesn't define your reach. From Lagos, I've worked with clients and teams across North America, Europe, and Asia. Remote work leveled the playing field, and platforms like GitHub became my portfolio before I ever built a dedicated one.</p>
+
+      <h2>What I've Learned</h2>
+      <ul>
+        <li><strong>Ship early, iterate often.</strong> Perfectionism is the enemy of progress.</li>
+        <li><strong>Master one stack deeply.</strong> Being a Rails expert opened more doors than being mediocre at five frameworks.</li>
+        <li><strong>Community matters.</strong> The Ruby and Rails community is one of the most welcoming in tech.</li>
+        <li><strong>Never stop learning.</strong> AI, system design, DevOps — the landscape keeps evolving, and so should you.</li>
+      </ul>
+
+      <h2>What's Next</h2>
+      <p>I'm doubling down on AI-powered applications and exploring how large language models can be integrated into everyday tools. The intersection of Rails and AI is where I see the most exciting opportunities, and I'm building right at that intersection.</p>
+    HTML
     status: "published",
     published_at: 2.weeks.ago,
     featured: false,
