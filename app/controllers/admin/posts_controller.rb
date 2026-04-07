@@ -55,7 +55,7 @@ module Admin
       params.require(:post).permit(
         :title, :slug, :excerpt, :status, :published_at, :featured,
         :meta_title, :meta_description, :og_title, :og_description,
-        :category_id, :cover_image, :body
+        :category_id, :cover_image, :body, :content_markdown
       )
     end
   end

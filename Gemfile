@@ -87,3 +87,6 @@ group :test do
   # Pin minitest to 5.x for Rails 8.0 compatibility
   gem "minitest", "~> 5.25"
 end
+
+gem "redcarpet", "~> 3.6"
+gem "rouge", "~> 4.7"

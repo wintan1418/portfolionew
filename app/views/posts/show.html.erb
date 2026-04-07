@@ -47,9 +47,13 @@
     </div>
 
     <!-- Article Body -->
-    <div class="mt-10 prose prose-invert prose-primary max-w-none animate-fade-in-up" style="animation-delay: 0.3s; opacity: 0;"
+    <div class="mt-10 prose prose-invert prose-primary max-w-none blog-content animate-fade-in-up" style="animation-delay: 0.3s; opacity: 0;"
          data-controller="highlight">
-      <%= @post.body %>
+      <% if @post.content_markdown.present? %>
+        <%= render_markdown(@post.content_markdown) %>
+      <% else %>
+        <%= @post.body %>
+      <% end %>
     </div>
 
     <!-- Share & Tags -->

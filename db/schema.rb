@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_03_152631) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_07_113332) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -104,6 +104,27 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_03_152631) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "newsletters", force: :cascade do |t|
+    t.string "subject", null: false
+    t.text "body", null: false
+    t.string "status", default: "draft"
+    t.datetime "sent_at"
+    t.integer "recipients_count", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "page_views", force: :cascade do |t|
+    t.string "path", null: false
+    t.string "ip_address"
+    t.string "user_agent"
+    t.string "referrer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_page_views_on_created_at"
+    t.index ["path"], name: "index_page_views_on_path"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title", null: false
     t.string "slug", null: false
@@ -119,6 +140,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_03_152631) do
     t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "content_markdown"
     t.index ["category_id"], name: "index_posts_on_category_id"
     t.index ["slug"], name: "index_posts_on_slug", unique: true
     t.index ["status", "published_at"], name: "index_posts_on_status_and_published_at"
@@ -160,6 +182,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_03_152631) do
     t.string "project_type", default: "personal"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "challenge"
+    t.text "solution"
+    t.text "results"
+    t.string "client_name"
+    t.string "client_role"
+    t.text "metrics"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -216,6 +244,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_03_152631) do
     t.string "relationship"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "token"
+    t.string "status", default: "approved"
+    t.datetime "submitted_at"
+    t.index ["token"], name: "index_testimonials_on_token", unique: true
   end
 
   create_table "users", force: :cascade do |t|

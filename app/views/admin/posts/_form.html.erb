@@ -45,8 +45,9 @@
     </div>
 
     <div>
-      <%= f.label :body, class: "block text-sm font-medium text-surface-300 mb-1" %>
-      <%= f.rich_text_area :body, class: "w-full rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      <%= f.label :content_markdown, "Content (Markdown)", class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <p class="text-xs text-surface-500 mb-2">Paste markdown from AI, docs, or write directly. Supports headings, code blocks, lists, tables, and more.</p>
+      <%= f.text_area :content_markdown, rows: 25, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm font-mono focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 leading-relaxed", placeholder: "# My Blog Post\n\nWrite your content in markdown...\n\n```ruby\nputs 'Hello World'\n```" %>
     </div>
   </div>
 

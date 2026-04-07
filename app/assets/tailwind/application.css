@@ -252,6 +252,326 @@
   --tw-prose-invert-links: #818cf8;
 }
 
+/* ═══════════════════════════════════
+   BLOG CONTENT — Markdown rendering
+   ═══════════════════════════════════ */
+
+.blog-content {
+  color: #cbd5e1;
+  font-size: 1.065rem;
+  line-height: 1.8;
+}
+
+.blog-content h1 {
+  color: #f1f5f9;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.blog-content h2 {
+  color: #f1f5f9;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  line-height: 1.35;
+}
+
+.blog-content h3 {
+  color: #e2e8f0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.blog-content h4 {
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.blog-content p {
+  margin-bottom: 1.25rem;
+}
+
+.blog-content a {
+  color: #818cf8;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.blog-content a:hover {
+  color: #a5b4fc;
+}
+
+.blog-content strong {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.blog-content em {
+  color: #94a3b8;
+}
+
+/* Lists */
+.blog-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.blog-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.blog-content li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.blog-content li > ul,
+.blog-content li > ol {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+/* Code blocks */
+.blog-content .code-block {
+  position: relative;
+  margin: 1.75rem 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #0d1117;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.blog-content .code-lang {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  background: rgba(148, 163, 184, 0.05);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.blog-content .code-block pre {
+  margin: 0;
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.blog-content .code-block code {
+  font-family: var(--font-mono);
+  background: none;
+  padding: 0;
+  color: #e2e8f0;
+}
+
+/* Inline code */
+.blog-content code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  border-radius: 0.375rem;
+  background: rgba(99, 102, 241, 0.1);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+/* Don't double-style code inside code blocks */
+.blog-content .code-block code {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  border: none;
+  font-size: 0.875rem;
+}
+
+/* Blockquotes */
+.blog-content blockquote {
+  border-left: 3px solid #6366f1;
+  padding: 0.75rem 1.25rem;
+  margin: 1.5rem 0;
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 0 0.5rem 0.5rem 0;
+  color: #94a3b8;
+}
+
+.blog-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tables */
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.blog-content th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 23, 42, 0.8);
+  border-bottom: 2px solid rgba(148, 163, 184, 0.15);
+  color: #f1f5f9;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.blog-content td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.blog-content tr:hover td {
+  background: rgba(99, 102, 241, 0.03);
+}
+
+/* Horizontal rule */
+.blog-content hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.2), transparent);
+  margin: 2.5rem 0;
+}
+
+/* Images */
+.blog-content img {
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+/* ── Rouge syntax highlighting (GitHub Dark style) ── */
+.highlight .c,
+.highlight .c1,
+.highlight .cm,
+.highlight .cs { color: #8b949e; font-style: italic; }
+.highlight .k,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr { color: #ff7b72; }
+.highlight .kc { color: #79c0ff; }
+.highlight .kt { color: #ffa657; }
+.highlight .s,
+.highlight .s1,
+.highlight .s2,
+.highlight .sb,
+.highlight .sc,
+.highlight .sh { color: #a5d6ff; }
+.highlight .si { color: #a5d6ff; }
+.highlight .sx { color: #a5d6ff; }
+.highlight .sr { color: #7ee787; }
+.highlight .ss { color: #a5d6ff; }
+.highlight .na { color: #79c0ff; }
+.highlight .nb { color: #ffa657; }
+.highlight .nc { color: #ffa657; font-weight: bold; }
+.highlight .no { color: #79c0ff; }
+.highlight .nd { color: #d2a8ff; }
+.highlight .ni { color: #c9d1d9; }
+.highlight .ne { color: #ffa657; font-weight: bold; }
+.highlight .nf,
+.highlight .fm { color: #d2a8ff; }
+.highlight .nl { color: #79c0ff; }
+.highlight .nn { color: #ffa657; }
+.highlight .nt { color: #7ee787; }
+.highlight .nv,
+.highlight .vi,
+.highlight .vc,
+.highlight .vg,
+.highlight .vs { color: #79c0ff; }
+.highlight .o,
+.highlight .ow { color: #ff7b72; }
+.highlight .p { color: #c9d1d9; }
+.highlight .m,
+.highlight .mi,
+.highlight .mf,
+.highlight .mh,
+.highlight .mo { color: #79c0ff; }
+.highlight .w { color: #c9d1d9; }
+
+/* ── Blog content light mode ── */
+.light .blog-content {
+  color: #334155;
+}
+
+.light .blog-content h1,
+.light .blog-content h2,
+.light .blog-content h3,
+.light .blog-content h4,
+.light .blog-content strong {
+  color: #0f172a;
+}
+
+.light .blog-content h2 {
+  border-bottom-color: #e2e8f0;
+}
+
+.light .blog-content em {
+  color: #64748b;
+}
+
+.light .blog-content code {
+  background: rgba(99, 102, 241, 0.08);
+  color: #4f46e5;
+  border-color: rgba(99, 102, 241, 0.12);
+}
+
+.light .blog-content .code-block {
+  background: #1e293b;
+  border-color: #e2e8f0;
+}
+
+.light .blog-content .code-block code {
+  color: #e2e8f0;
+  background: none;
+  border: none;
+}
+
+.light .blog-content blockquote {
+  background: rgba(99, 102, 241, 0.04);
+  color: #64748b;
+}
+
+.light .blog-content th {
+  background: #f8fafc;
+  color: #0f172a;
+  border-bottom-color: #e2e8f0;
+}
+
+.light .blog-content td {
+  border-bottom-color: #f1f5f9;
+}
+
+.light .blog-content a {
+  color: #4f46e5;
+}
+
+.light .blog-content a:hover {
+  color: #6366f1;
+}
+
 /* ═══════════════════════════════════════════════════════
    LIGHT MODE — a proper, bright, clean light theme
    ═══════════════════════════════════════════════════════ */
