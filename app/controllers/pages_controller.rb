@@ -14,12 +14,13 @@ class PagesController < ApplicationController
         title: "#{@profile.full_name} — Full-Stack Software Engineer",
         description: @profile.og_description.presence || @profile.meta_description.presence || @profile.bio,
         type: "website",
-        image: (@profile.og_image.attached? ? url_for(@profile.og_image) : nil)
+        image: @profile.og_image.attached? ? url_for(@profile.og_image) : default_og_image_url
       },
       twitter: {
         card: "summary_large_image",
         title: "#{@profile.full_name} — Full-Stack Software Engineer",
-        description: @profile.meta_description.presence || @profile.bio
+        description: @profile.meta_description.presence || @profile.bio,
+        image: @profile.og_image.attached? ? url_for(@profile.og_image) : default_og_image_url
       }
     )
   end
