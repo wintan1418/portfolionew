@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include Trackable
 
   allow_browser versions: :modern
+  before_action :set_meta_tags_from_profile
 
   helper_method :current_profile
 
