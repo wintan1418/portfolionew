@@ -6,9 +6,6 @@ class Comment < ApplicationRecord
   validates :author_name, presence: true
   validates :body, presence: true, length: { maximum: 2000 }
   validates :author_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
-
-  scope :approved, -> { where(approved: true) }
-  scope :pending, -> { where(approved: false) }
   scope :top_level, -> { where(parent_id: nil) }
   scope :recent, -> { order(created_at: :desc) }
   scope :oldest_first, -> { order(created_at: :asc) }

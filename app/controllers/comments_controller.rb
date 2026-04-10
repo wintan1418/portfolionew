@@ -6,9 +6,9 @@ class CommentsController < ApplicationController
     @comment = @post.comments.build(comment_params)
 
     if @comment.save
-      redirect_to blog_post_path(@post.slug), notice: "Comment submitted! It will appear after approval."
+      redirect_to blog_post_path(@post.slug), notice: "Comment posted!"
     else
-      @comments = @post.comments.approved.top_level.oldest_first.includes(:replies)
+      @comments = @post.comments.top_level.oldest_first.includes(:replies)
       @liked = @post.post_likes.exists?(session_id: like_session_id)
       @related_posts = Post.published
                           .where(category: @post.category)

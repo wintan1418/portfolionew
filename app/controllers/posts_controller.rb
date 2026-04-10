@@ -22,7 +22,7 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.published.find_by!(slug: params[:slug])
-    @comments = @post.comments.approved.top_level.oldest_first.includes(:replies)
+    @comments = @post.comments.top_level.oldest_first.includes(:replies)
     @comment = Comment.new
     @liked = @post.post_likes.exists?(session_id: like_session_id)
     @related_posts = Post.published

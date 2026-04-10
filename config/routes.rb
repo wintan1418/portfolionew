@@ -65,12 +65,7 @@ Rails.application.routes.draw do
 
     resources :categories
 
-    resources :comments, only: [ :index, :destroy ] do
-      member do
-        patch :approve
-        patch :reject
-      end
-    end
+    resources :comments, only: [ :index, :destroy ]
 
     resources :testimonials do
       collection do

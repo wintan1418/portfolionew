@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_10_195953) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_10_203855) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -69,7 +69,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_10_195953) do
     t.text "body", null: false
     t.bigint "post_id", null: false
     t.bigint "parent_id"
-    t.boolean "approved", default: false, null: false
+    t.boolean "approved", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["parent_id"], name: "index_comments_on_parent_id"

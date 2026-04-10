@@ -29,9 +29,9 @@
   </div>
 
   <!-- Nested replies -->
-  <% if comment.replies.approved.any? %>
+  <% if comment.replies.any? %>
     <div class="mt-4 space-y-4 border-l border-surface-800/50 pl-4">
-      <% comment.replies.approved.oldest_first.each do |reply| %>
+      <% comment.replies.oldest_first.each do |reply| %>
         <%= render "posts/comment", comment: reply %>
       <% end %>
     </div>
