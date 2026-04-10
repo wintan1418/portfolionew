@@ -1,0 +1,27 @@
+<% if @comment.parent_id.present? %>
+  <%# Reply — append to the parent comment's replies area %>
+  <%= turbo_stream.append "comment-#{@comment.parent_id}" do %>
+    <div class="mt-4 space-y-4 border-l border-surface-800/50 pl-4">
+      <%= render "posts/comment", comment: @comment %>
+    </div>
+  <% end %>
+<% else %>
+  <%# Top-level comment — remove empty state if present, append to list %>
+  <%= turbo_stream.remove "no-comments" %>
+  <%= turbo_stream.append "comments-list" do %>
+    <div class="space-y-6">
+      <%= render "posts/comment", comment: @comment %>
+    </div>
+  <% end %>
+<% end %>
+
+<%# Reset the form %>
+<%= turbo_stream.update "comment-form" do %>
+  <h3 class="text-lg font-semibold text-white mb-4">Leave a comment</h3>
+  <%= render "posts/comment_form", post: @post, comment: Comment.new %>
+<% end %>
+
+<%# Update comment count %>
+<%= turbo_stream.update "comments-count" do %>
+  (<%= @post.reload.comments_count %>)
+<% end %>

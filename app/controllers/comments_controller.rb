@@ -6,17 +6,31 @@ class CommentsController < ApplicationController
     @comment = @post.comments.build(comment_params)
 
     if @comment.save
-      redirect_to blog_post_path(@post.slug), notice: "Comment posted!"
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to blog_post_path(@post.slug), notice: "Comment posted!" }
+      end
     else
-      @comments = @post.comments.top_level.oldest_first.includes(:replies)
-      @liked = @post.post_likes.exists?(session_id: like_session_id)
-      @related_posts = Post.published
-                          .where(category: @post.category)
-                          .where.not(id: @post.id)
-                          .order(published_at: :desc)
-                          .limit(3) if @post.category
-      flash.now[:alert] = "Please fix the errors below."
-      render "posts/show", status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(
+            "comment-form",
+            partial: "posts/comment_form",
+            locals: { post: @post, comment: @comment }
+          )
+        end
+        format.html do
+          @comments = @post.comments.top_level.oldest_first.includes(:replies)
+          @liked = @post.post_likes.exists?(session_id: like_session_id)
+          @related_posts = Post.published
+                              .where(category: @post.category)
+                              .where.not(id: @post.id)
+                              .order(published_at: :desc)
+                              .limit(3) if @post.category
+          flash.now[:alert] = "Please fix the errors below."
+          render "posts/show", status: :unprocessable_entity
+        end
+      end
     end
   end
 

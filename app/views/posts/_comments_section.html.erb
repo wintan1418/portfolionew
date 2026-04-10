@@ -5,9 +5,9 @@
       <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3">Discussion</p>
       <h2 class="text-3xl font-extrabold text-white section-line">
         Comments
-        <% if post.comments_count > 0 %>
-          <span class="text-lg font-normal text-surface-500 ml-2">(<%= post.comments_count %>)</span>
-        <% end %>
+        <span id="comments-count" class="text-lg font-normal text-surface-500 ml-2">
+          <% if post.comments_count > 0 %>(<%= post.comments_count %>)<% end %>
+        </span>
       </h2>
     </div>
   </div>
@@ -18,62 +18,26 @@
   </div>
 
   <!-- Comment Form -->
-  <div class="glass rounded-2xl p-6 mb-10 reveal" data-comment-reply-target="form">
+  <div id="comment-form" class="glass rounded-2xl p-6 mb-10 reveal" data-comment-reply-target="form">
     <h3 class="text-lg font-semibold text-white mb-4">Leave a comment</h3>
-
-    <%= form_with model: comment, url: blog_post_comments_path(post.slug), class: "space-y-4" do |f| %>
-      <%= f.hidden_field :parent_id, data: { "comment-reply-target": "parentId" } %>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-mono text-surface-500 uppercase tracking-wider mb-1.5">Name *</label>
-          <%= f.text_field :author_name, required: true, placeholder: "Your name",
-              class: "w-full px-4 py-2.5 rounded-xl bg-surface-950 border border-surface-800 text-white placeholder-surface-600 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm transition-colors" %>
-          <% if comment.errors[:author_name].any? %>
-            <p class="mt-1 text-xs text-red-400"><%= comment.errors[:author_name].first %></p>
-          <% end %>
-        </div>
-        <div>
-          <label class="block text-xs font-mono text-surface-500 uppercase tracking-wider mb-1.5">Email <span class="text-surface-600">(optional)</span></label>
-          <%= f.email_field :author_email, placeholder: "your@email.com",
-              class: "w-full px-4 py-2.5 rounded-xl bg-surface-950 border border-surface-800 text-white placeholder-surface-600 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm transition-colors" %>
-          <% if comment.errors[:author_email].any? %>
-            <p class="mt-1 text-xs text-red-400"><%= comment.errors[:author_email].first %></p>
-          <% end %>
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-xs font-mono text-surface-500 uppercase tracking-wider mb-1.5">Comment *</label>
-        <%= f.text_area :body, required: true, rows: 4, placeholder: "Share your thoughts...",
-            class: "w-full px-4 py-2.5 rounded-xl bg-surface-950 border border-surface-800 text-white placeholder-surface-600 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm transition-colors resize-y" %>
-        <% if comment.errors[:body].any? %>
-          <p class="mt-1 text-xs text-red-400"><%= comment.errors[:body].first %></p>
-        <% end %>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <%= f.submit "Post Comment", class: "px-5 py-2.5 rounded-full bg-primary-600 text-white font-medium hover:bg-primary-500 transition-colors text-sm cursor-pointer" %>
-        <button type="button" data-action="comment-reply#cancelReply" data-cancel-reply class="hidden px-4 py-2 rounded-full text-sm text-surface-400 border border-surface-800 hover:border-surface-700 hover:text-surface-300 transition-colors">
-          Cancel Reply
-        </button>
-      </div>
-    <% end %>
+    <%= render "posts/comment_form", post: post, comment: comment %>
   </div>
 
   <!-- Comments List -->
-  <% if comments.any? %>
-    <div class="space-y-6">
-      <% comments.each do |comment| %>
-        <div class="reveal">
-          <%= render "posts/comment", comment: comment %>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="text-center py-12 reveal">
-      <svg class="w-12 h-12 mx-auto text-surface-700 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg>
-      <p class="text-surface-500 text-sm">No comments yet. Be the first to share your thoughts!</p>
-    </div>
-  <% end %>
+  <div id="comments-list">
+    <% if comments.any? %>
+      <div class="space-y-6">
+        <% comments.each do |c| %>
+          <div class="reveal">
+            <%= render "posts/comment", comment: c %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div id="no-comments" class="text-center py-12 reveal">
+        <svg class="w-12 h-12 mx-auto text-surface-700 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg>
+        <p class="text-surface-500 text-sm">No comments yet. Be the first to share your thoughts!</p>
+      </div>
+    <% end %>
+  </div>
 </div>
