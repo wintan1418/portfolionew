@@ -3,6 +3,8 @@ class Post < ApplicationRecord
 
   # Associations
   belongs_to :category, optional: true
+  has_many :comments, dependent: :destroy
+  has_many :post_likes, dependent: :destroy
 
   # Attachments
   has_one_attached :cover_image

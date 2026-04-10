@@ -1,0 +1,39 @@
+<div id="comment-<%= comment.id %>" class="<%= 'ml-8 sm:ml-12' if comment.parent_id.present? %>">
+  <div class="flex gap-3">
+    <!-- Avatar -->
+    <div class="shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center text-white text-xs font-bold uppercase">
+      <%= comment.author_name.first(2) %>
+    </div>
+
+    <div class="flex-1 min-w-0">
+      <!-- Header -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="text-sm font-semibold text-white"><%= comment.author_name %></span>
+        <span class="text-xs font-mono text-surface-500"><%= time_ago_in_words(comment.created_at) %> ago</span>
+      </div>
+
+      <!-- Body -->
+      <div class="mt-1.5 text-sm text-surface-300 leading-relaxed">
+        <%= simple_format(h(comment.body), {}, wrapper_tag: "p") %>
+      </div>
+
+      <!-- Reply button -->
+      <button type="button"
+              data-action="comment-reply#reply"
+              data-comment-id="<%= comment.id %>"
+              data-author-name="<%= comment.author_name %>"
+              class="mt-2 text-xs font-mono text-surface-500 hover:text-primary-400 transition-colors uppercase tracking-wider">
+        Reply
+      </button>
+    </div>
+  </div>
+
+  <!-- Nested replies -->
+  <% if comment.replies.approved.any? %>
+    <div class="mt-4 space-y-4 border-l border-surface-800/50 pl-4">
+      <% comment.replies.approved.oldest_first.each do |reply| %>
+        <%= render "posts/comment", comment: reply %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

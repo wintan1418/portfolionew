@@ -22,6 +22,9 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.published.find_by!(slug: params[:slug])
+    @comments = @post.comments.approved.top_level.oldest_first.includes(:replies)
+    @comment = Comment.new
+    @liked = @post.post_likes.exists?(session_id: like_session_id)
     @related_posts = Post.published
                         .where(category: @post.category)
                         .where.not(id: @post.id)
@@ -48,4 +51,11 @@ class PostsController < ApplicationController
       format.rss { render layout: false }
     end
   end
+
+  private
+
+  def like_session_id
+    session[:like_token] ||= SecureRandom.uuid
+  end
+  helper_method :like_session_id
 end

@@ -68,6 +68,9 @@
       </div>
     </div>
 
+    <!-- Comments Section -->
+    <%= render "posts/comments_section", post: @post, comments: @comments, comment: @comment, liked: @liked %>
+
     <!-- Related Posts -->
     <% if @related_posts&.any? %>
       <div class="mt-16" data-controller="scroll-reveal">

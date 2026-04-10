@@ -16,6 +16,9 @@ module Admin
       @subscriber_count = Subscriber.active.count
       @contacts_count = Contact.count rescue 0
 
+      # Comments
+      @pending_comments_count = Comment.pending.count
+
       # Recent activity
       @recent_contacts = Contact.order(created_at: :desc).limit(5)
     end

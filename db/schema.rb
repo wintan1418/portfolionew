@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_07_113332) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_10_195953) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -61,6 +61,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_07_113332) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_categories_on_slug", unique: true
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "author_name", null: false
+    t.string "author_email"
+    t.text "body", null: false
+    t.bigint "post_id", null: false
+    t.bigint "parent_id"
+    t.boolean "approved", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["post_id", "approved"], name: "index_comments_on_post_id_and_approved"
+    t.index ["post_id"], name: "index_comments_on_post_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -125,6 +139,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_07_113332) do
     t.index ["path"], name: "index_page_views_on_path"
   end
 
+  create_table "post_likes", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.string "session_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id", "session_id"], name: "index_post_likes_on_post_id_and_session_id", unique: true
+    t.index ["post_id"], name: "index_post_likes_on_post_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title", null: false
     t.string "slug", null: false
@@ -141,6 +164,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_07_113332) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "content_markdown"
+    t.integer "comments_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
     t.index ["category_id"], name: "index_posts_on_category_id"
     t.index ["slug"], name: "index_posts_on_slug", unique: true
     t.index ["status", "published_at"], name: "index_posts_on_status_and_published_at"
@@ -260,6 +285,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_07_113332) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "comments", column: "parent_id"
+  add_foreign_key "comments", "posts"
+  add_foreign_key "post_likes", "posts"
   add_foreign_key "posts", "categories"
   add_foreign_key "sessions", "users"
 end

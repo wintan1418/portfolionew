@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     get "feed", to: "posts#feed", as: :blog_feed, defaults: { format: :rss }
     get "category/:slug", to: "posts#category", as: :blog_category
     get ":slug", to: "posts#show", as: :blog_post
+    post ":post_slug/comments", to: "comments#create", as: :blog_post_comments
+    post ":post_slug/like", to: "post_likes#toggle", as: :blog_post_like
   end
 
   # Contact
@@ -62,6 +64,13 @@ Rails.application.routes.draw do
     end
 
     resources :categories
+
+    resources :comments, only: [ :index, :destroy ] do
+      member do
+        patch :approve
+        patch :reject
+      end
+    end
 
     resources :testimonials do
       collection do
