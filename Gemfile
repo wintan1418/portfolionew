@@ -46,7 +46,7 @@ gem "image_processing", "~> 1.2"
 gem "pagy", "~> 9.0"
 
 # SEO meta tags
-gem "meta-tags", "~> 2.22"
+gem "meta-tags", "~> 2.23"
 
 # Inline SVG icons
 gem "inline_svg", "~> 1.10"
