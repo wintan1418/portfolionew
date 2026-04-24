@@ -68,7 +68,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # Fake data for seeding
-  gem "faker", "~> 3.5"
+  gem "faker", "~> 3.6"
 end
 
 group :development do
