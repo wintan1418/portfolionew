@@ -85,7 +85,7 @@ group :test do
   gem "selenium-webdriver"
 
   # Pin minitest to 5.x for Rails 8.0 compatibility
-  gem "minitest", "~> 5.25"
+  gem "minitest", "~> 6.0"
 end
 
 gem "redcarpet", "~> 3.6"
