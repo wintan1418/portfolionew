@@ -242,7 +242,7 @@ PROJECTS = [
 ]
 
 # Existing lab projects from the earlier portfolio: keep them, but group them.
-LAB_SLUGS = %w[crypcop-solana-token-scanner railsy-commerce this-is-that local-hub].freeze
+LAB_SLUGS = %w[railsy-commerce local-hub].freeze
 LAB_RENAMES = { "Live ven" => "lvhs", "Roster" => "rosterflow" }.freeze
 
 LAB_RENAMES.each do |old_slug, new_slug|
@@ -265,17 +265,12 @@ PROJECTS.each do |attrs|
 end
 
 Project.where(slug: LAB_SLUGS).update_all(project_type: "lab", featured: false)
-if (roster = Project.find_by(slug: "rosterflow"))
-  roster.update!(project_type: "lab", featured: false, position: 20, tech_stack: [ "JavaScript", "React", "Vercel" ]) if roster.tech_stack.blank?
-  roster.update!(project_type: "lab", featured: false)
-  attach_shots!(roster)
-end
 Project.where(project_type: "lab").order(:position).each_with_index { |pr, i| pr.update_columns(position: 20 + i) }
 Project.find_by(slug: "railsy-commerce")&.then { |pr| attach_shots!(pr) }
 Project.find_by(slug: "local-hub")&.then { |pr| attach_shots!(pr) }
 
 # Retired entries.
-Project.where(slug: "naijahomes").destroy_all
+Project.where(slug: %w[naijahomes rosterflow crypcop-solana-token-scanner this-is-that]).destroy_all
 
 # Placeholder testimonials seeded by the original template, never real clients.
 removed = Testimonial.where(author_name: [ "Alex Thompson", "Sarah Chen", "Michael Okonkwo" ]).destroy_all
