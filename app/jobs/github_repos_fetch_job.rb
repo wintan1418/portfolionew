@@ -19,6 +19,14 @@ class GithubReposFetchJob < ApplicationJob
     repos = GithubService.new(username).fetch_repos
     Rails.cache.write("github_repos", repos, expires_in: 25.hours)
 
+    if repos.any?
+      profile.update_columns(
+        github_repos_count: repos.size,
+        github_stars_count: repos.sum { |r| r[:stargazers_count].to_i },
+        github_synced_at: Time.current
+      )
+    end
+
     Rails.logger.info("[GithubReposFetchJob] Cached #{repos.size} repos for #{username}")
   end
 

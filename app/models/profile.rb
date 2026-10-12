@@ -13,4 +13,22 @@ class Profile < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  # Headline numbers for the home page. Explicit overrides win; otherwise they
+  # are derived from the data we actually have.
+  def stats
+    {
+      years: years_experience.presence || computed_years_experience,
+      projects: projects_delivered.presence || Project.count,
+      repos: github_repos_count.presence || 0,
+      stars: github_stars_count.presence || 0
+    }
+  end
+
+  def computed_years_experience
+    started = Experience.minimum(:start_date)
+    return 0 unless started
+
+    ((Date.current - started) / 365.25).floor
+  end
 end

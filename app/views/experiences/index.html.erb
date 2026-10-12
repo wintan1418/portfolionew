@@ -1,114 +1,48 @@
-<section class="py-24">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16 animate-fade-in-up">
-      <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3">Career</p>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-white section-line-center">Experience</h1>
-      <p class="mt-4 text-base text-surface-500">
-        My professional journey
-      </p>
-    </div>
+<section class="pt-32 pb-10 sm:pt-40" data-controller="reveal">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+    <h1 class="display-serif text-5xl sm:text-6xl" data-reveal="up">My Journey</h1>
+    <p class="mt-5 max-w-xl text-[15px] sm:text-base text-ink-2 leading-relaxed" data-reveal="up" data-reveal-delay="0.05">A timeline of my professional experience and key milestones.</p>
+  </div>
+</section>
 
-    <!-- Work Experience Timeline -->
-    <% if @experiences.any? %>
-      <div class="max-w-3xl mx-auto" data-controller="scroll-reveal">
-        <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3 reveal">Timeline</p>
-        <h2 class="text-3xl font-extrabold text-white section-line mb-8 reveal">Work Experience</h2>
-
-        <div class="relative">
-          <!-- Timeline line -->
-          <div class="absolute left-4 top-0 bottom-0 w-px bg-surface-900"></div>
-
-          <div class="space-y-8">
-            <% @experiences.each do |exp| %>
-              <div class="relative pl-12 reveal">
-                <!-- Timeline dot -->
-                <div class="absolute left-2.5 top-1.5 w-3 h-3 rounded-full border-2 <%= exp.current? ? 'bg-emerald-500 border-emerald-400' : 'bg-surface-800 border-surface-700' %>"></div>
-
-                <div class="glass-hover rounded-2xl p-6">
-                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                    <div>
-                      <h3 class="text-lg font-semibold text-white"><%= exp.role %></h3>
-                      <p class="text-primary-400 font-medium">
-                        <% if exp.company_url.present? %>
-                          <a href="<%= exp.company_url %>" target="_blank" rel="noopener" class="hover:text-primary-300 transition-colors"><%= exp.company %></a>
-                        <% else %>
-                          <%= exp.company %>
-                        <% end %>
-                      </p>
-                    </div>
-                    <div class="flex items-center gap-2 shrink-0">
-                      <span class="font-mono text-surface-500 text-xs uppercase tracking-wider">
-                        <%= exp.start_date.strftime("%b %Y") %> — <%= exp.current? ? "Present" : exp.end_date&.strftime("%b %Y") %>
-                      </span>
-                      <% if exp.current? %>
-                        <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono">Current</span>
-                      <% end %>
-                    </div>
-                  </div>
-
-                  <% if exp.location.present? || exp.employment_type.present? %>
-                    <div class="mt-2 flex items-center gap-3 text-xs font-mono text-surface-500 uppercase tracking-wider">
-                      <% if exp.location.present? %>
-                        <span class="flex items-center gap-1">
-                          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-                          <%= exp.location %>
-                        </span>
-                      <% end %>
-                      <% if exp.employment_type.present? %>
-                        <span class="capitalize"><%= exp.employment_type.gsub("_", " ") %></span>
-                      <% end %>
-                    </div>
-                  <% end %>
-
-                  <% if exp.description.present? %>
-                    <p class="mt-3 text-surface-400 text-sm leading-relaxed"><%= exp.description %></p>
-                  <% end %>
-
-                  <% if exp.highlights.any? %>
-                    <ul class="mt-3 space-y-1">
-                      <% exp.highlights.each do |highlight| %>
-                        <li class="text-surface-400 text-sm flex items-start gap-2">
-                          <svg class="w-3.5 h-3.5 text-primary-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                          <%= highlight %>
-                        </li>
-                      <% end %>
-                    </ul>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-
-    <!-- Education -->
-    <% if @educations.any? %>
-      <div class="max-w-3xl mx-auto mt-16" data-controller="scroll-reveal">
-        <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3 reveal">Background</p>
-        <h2 class="text-3xl font-extrabold text-white section-line mb-8 reveal">Education</h2>
-
-        <div class="space-y-4">
-          <% @educations.each do |edu| %>
-            <div class="glass-hover rounded-2xl p-6 reveal">
-              <h3 class="text-lg font-semibold text-white"><%= edu.institution %></h3>
-              <% if edu.degree.present? || edu.field_of_study.present? %>
-                <p class="text-primary-400 font-medium mt-1">
-                  <%= [edu.degree, edu.field_of_study].compact.join(" in ") %>
-                </p>
+<section class="pb-20" data-controller="reveal">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <ol class="lg:col-span-8 timeline space-y-6">
+      <% @experiences.each_with_index do |exp, i| %>
+        <li class="relative pl-10 sm:pl-12" data-reveal="up" data-reveal-delay="<%= [i * 0.04, 0.2].min %>">
+          <span class="timeline-dot"></span>
+          <p class="text-xs text-ink-3"><%= exp.start_date.strftime("%Y") %> – <%= exp.current? ? "Present" : exp.end_date&.strftime("%Y") %></p>
+          <div class="mt-2 card p-6 flex gap-5">
+            <span class="icon-tile shrink-0"><svg class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></span>
+            <div class="min-w-0 flex-1">
+              <h2 class="font-semibold text-ink"><%= exp.role %></h2>
+              <p class="text-sm text-ink-2"><% if exp.company_url.present? %><a href="<%= exp.company_url %>" target="_blank" rel="noopener" class="hover:text-ink"><%= exp.company %></a><% else %><%= exp.company %><% end %><%= " · #{[exp.location, exp.employment_type.to_s.tr('_', ' ').presence].compact_blank.join(' · ')}" if exp.location.present? || exp.employment_type.present? %></p>
+              <% if exp.description.present? %>
+                <% clean = exp.description.gsub(/[\u{E000}-\u{F8FF}\u{FFFD}]/, "").gsub("\r", "") %>
+                <% bullets = clean.split(/\s*[•·]\s*|\n+/).map(&:strip).reject(&:blank?) %>
+                <% if bullets.size > 1 %>
+                  <ul class="mt-3 space-y-1.5 text-sm text-ink-2 leading-relaxed list-disc pl-4"><% bullets.first(6).each do |b| %><li><%= b %></li><% end %></ul>
+                <% else %>
+                  <p class="mt-3 text-sm text-ink-2 leading-relaxed"><%= exp.description %></p>
+                <% end %>
               <% end %>
-              <% if edu.start_date.present? %>
-                <p class="font-mono text-surface-500 text-xs uppercase tracking-wider mt-1">
-                  <%= edu.start_date.strftime("%Y") %><%= " — #{edu.end_date.strftime('%Y')}" if edu.end_date.present? %>
-                </p>
-              <% end %>
-              <% if edu.description.present? %>
-                <p class="mt-3 text-surface-400 text-sm"><%= edu.description %></p>
+              <% if exp.highlights.any? %>
+                <ul class="mt-2 space-y-1 text-sm text-ink-2 list-disc pl-4"><% exp.highlights.each do |h| %><li><%= h %></li><% end %></ul>
               <% end %>
             </div>
-          <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ol>
+    <aside class="lg:col-span-4 space-y-4 lg:sticky lg:top-24 self-start" data-reveal="right">
+      <% if @educations.any? %>
+        <div class="card p-6"><p class="eyebrow">Education</p>
+          <% @educations.each do |edu| %><p class="mt-3 font-semibold text-ink"><%= edu.institution %></p><p class="text-sm text-ink-2"><%= [edu.degree, edu.field_of_study].compact_blank.join(" in ") %></p><% if edu.start_date.present? %><p class="text-xs text-ink-3 mt-1"><%= edu.start_date.strftime("%Y") %><%= "–#{edu.end_date.strftime('%Y')}" if edu.end_date.present? %></p><% end %><% end %>
         </div>
+      <% end %>
+      <div class="card p-6"><p class="eyebrow">Résumé</p>
+        <% if current_profile.resume_pdf.attached? %><%= link_to "Download PDF →", rails_blob_path(current_profile.resume_pdf, disposition: :attachment), class: "mt-3 btn btn-glass btn-sm" %><% else %><%= link_to "Ask me for one →", contact_path, class: "mt-3 btn btn-glass btn-sm" %><% end %>
       </div>
-    <% end %>
+    </aside>
   </div>
 </section>

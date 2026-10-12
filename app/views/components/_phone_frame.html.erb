@@ -1,0 +1,11 @@
+<%# locals: (image:, alt: "", css: "", lightbox: false) %>
+<div class="phone-frame <%= css %>">
+  <div class="screen">
+    <% src = image.respond_to?(:attached?) ? url_for(image) : image %>
+    <% if lightbox %>
+      <a href="<%= src %>" data-lightbox-src="<%= src %>" data-lightbox-caption="<%= alt %>" data-action="lightbox#open" class="block cursor-zoom-in h-full"><%= image_tag src, alt: alt, loading: "lazy" %></a>
+    <% else %>
+      <%= image_tag src, alt: alt, loading: "lazy" %>
+    <% end %>
+  </div>
+</div>

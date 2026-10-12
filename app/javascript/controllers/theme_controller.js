@@ -1,54 +1,29 @@
 import { Controller } from "@hotwired/stimulus"
 
+// Theme lives on <html class="dark|light">. Dark is the default.
 export default class extends Controller {
-  static targets = ["toggle", "body"]
-
   connect() {
-    this.applyTheme()
+    this.apply(localStorage.getItem("theme") || "dark")
   }
 
   toggle() {
-    const html = document.documentElement
-    const isDark = html.classList.contains("dark")
+    const next = document.documentElement.classList.contains("dark") ? "light" : "dark"
+    localStorage.setItem("theme", next)
+    this.apply(next, true)
+  }
 
-    if (isDark) {
-      html.classList.remove("dark")
-      html.classList.add("light")
-      localStorage.setItem("theme", "light")
-    } else {
-      html.classList.remove("light")
-      html.classList.add("dark")
-      localStorage.setItem("theme", "dark")
+  apply(theme, animate = false) {
+    const html = document.documentElement
+    const swap = () => {
+      html.classList.remove("dark", "light")
+      html.classList.add(theme)
+      html.style.colorScheme = theme
+      this.element.dispatchEvent(new CustomEvent("theme:changed", { bubbles: true, detail: { theme } }))
     }
-
-    this.updateUI()
-  }
-
-  applyTheme() {
-    const saved = localStorage.getItem("theme") || "dark"
-    const html = document.documentElement
-
-    html.classList.remove("dark", "light")
-    html.classList.add(saved)
-    this.updateUI()
-  }
-
-  updateUI() {
-    const isDark = document.documentElement.classList.contains("dark")
-
-    // Toggle icon visibility
-    document.querySelectorAll(".dark-icon").forEach(el => el.classList.toggle("hidden", !isDark))
-    document.querySelectorAll(".light-icon").forEach(el => el.classList.toggle("hidden", isDark))
-
-    // Update body colors
-    if (this.hasBodyTarget) {
-      if (isDark) {
-        this.bodyTarget.classList.add("bg-surface-950", "text-surface-200")
-        this.bodyTarget.classList.remove("bg-white", "text-surface-800")
-      } else {
-        this.bodyTarget.classList.remove("bg-surface-950", "text-surface-200")
-        this.bodyTarget.classList.add("bg-white", "text-surface-800")
-      }
+    if (animate && typeof document.startViewTransition === "function") {
+      document.startViewTransition(swap)
+    } else {
+      swap()
     }
   }
 }

@@ -1,6 +1,7 @@
 class GithubService
   GITHUB_API_URL = "https://api.github.com".freeze
   CACHE_TTL = 1.hour
+  MAX_PAGES = 5
 
   def initialize(username)
     @username = username
@@ -17,14 +18,20 @@ class GithubService
   private
 
   def fetch_repos_from_api
-    response = connection.get("users/#{@username}/repos", sort: "updated", per_page: 100)
+    repos = []
+    (1..MAX_PAGES).each do |page|
+      response = connection.get("users/#{@username}/repos", sort: "updated", per_page: 100, page: page)
 
-    if response.success?
-      parse_repos(response.body)
-    else
-      Rails.logger.error("[GithubService] Failed to fetch repos for #{@username}: #{response.status}")
-      []
+      unless response.success?
+        Rails.logger.error("[GithubService] Failed to fetch repos for #{@username}: #{response.status}")
+        break
+      end
+
+      batch = parse_repos(response.body)
+      repos.concat(batch)
+      break if batch.size < 100
     end
+    repos
   rescue Faraday::Error => e
     Rails.logger.error("[GithubService] Request error for #{@username}: #{e.message}")
     []

@@ -11,7 +11,7 @@ class Testimonial < ApplicationRecord
   before_create :generate_token
 
   # Scopes
-  scope :featured, -> { where(featured: true).where(status: ["approved", nil]) }
+  scope :featured, -> { where(featured: true).where(status: [ "approved", nil ]) }
   scope :ordered, -> { order(position: :asc) }
   scope :pending, -> { where(status: "pending") }
   scope :approved, -> { where(status: "approved") }

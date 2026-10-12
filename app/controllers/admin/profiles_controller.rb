@@ -22,6 +22,7 @@ module Admin
         :email, :phone, :location,
         :github_url, :linkedin_url, :twitter_url, :website_url,
         :available_for_hire, :availability_text,
+        :years_experience, :projects_delivered, :github_repos_count, :github_stars_count,
         :meta_description, :og_title, :og_description,
         :avatar, :resume_pdf, :og_image, :about_rich
       )

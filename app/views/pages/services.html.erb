@@ -1,255 +1,62 @@
 <% content_for :head do %>
-  <%= json_ld_tag({
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "provider": {
-      "@type": "Person",
-      "name": @profile.full_name,
-      "jobTitle": "Full-Stack Software Engineer"
-    },
-    "serviceType": "Software Development",
-    "areaServed": "Worldwide"
-  }) %>
+  <%= json_ld_tag({ "@context": "https://schema.org", "@type": "Service", "provider": { "@type": "Person", "name": @profile.full_name, "jobTitle": @profile.headline }, "serviceType": "Software Development", "areaServed": "Worldwide" }) %>
 <% end %>
 
-<!-- ═══════════════════════════════════════════ HERO ═══════════════════════════════════════════ -->
-<section class="relative py-32 overflow-hidden">
-  <!-- Ambient glow -->
-  <div class="absolute top-1/4 right-[15%] w-[400px] h-[400px] bg-primary-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-  <div class="absolute bottom-0 left-[10%] w-[300px] h-[300px] bg-accent-500/8 rounded-full blur-[100px] pointer-events-none"></div>
-  <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-surface-700 to-transparent"></div>
+<section class="pt-32 pb-10 sm:pt-40" data-controller="reveal">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+    <h1 class="display-serif text-5xl sm:text-6xl" data-reveal="up">Services.</h1>
+    <p class="mt-5 max-w-xl text-[15px] sm:text-base text-ink-2 leading-relaxed" data-reveal="up" data-reveal-delay="0.05">I help individuals and businesses turn ideas into high-quality digital products.</p>
+  </div>
+</section>
 
-  <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
-    <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-4 animate-fade-in">Services</p>
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight animate-fade-in-up" style="animation-delay: 0.1s; opacity: 0;">
-      Let's Build Something
-      <span class="gradient-text">Great</span>
-    </h1>
-    <p class="mt-6 max-w-2xl mx-auto text-lg text-surface-400 leading-relaxed animate-fade-in-up" style="animation-delay: 0.25s; opacity: 0;">
-      From idea to deployment, I partner with startups and businesses to create
-      robust, scalable applications that drive real results.
-    </p>
-
-    <% if @profile.available_for_hire? %>
-      <div class="mt-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/20 text-sm font-mono text-emerald-400 animate-fade-in-up" style="animation-delay: 0.4s; opacity: 0;">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+<section class="pb-6" data-controller="reveal">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-4" data-reveal="stagger">
+    <% [
+      ["Web Application Development", "Custom web applications using Ruby on Rails, Hotwire, React and modern technologies. Auth, billing, admin and deployment included.", "M4 5a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm0 4h16", "build"],
+      ["SaaS Architecture", "Scalable, multi-tenant SaaS products with clean architecture, PostgreSQL design and best practices from day one.", "M4 7h16M4 12h16M4 17h10", "build"],
+      ["Rebuilds and Migrations", "Agency builds, WordPress sites and legacy apps rebuilt on Rails with the data and search rankings carried over.", "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15", "rebuild"],
+      ["AI Integration", "Add assistants, document search with pgvector and automation to your product. Metered, rate-limited and logged.", "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z", "ai layer"],
+      ["Catalogs, Portals and Quote Flows", "Searchable product data, customer and staff portals, compare and quote tools for businesses that sell by conversation.", "M3 7h18M3 12h18M3 17h18", "build"],
+      ["Consulting", "Technical advisory, code reviews and architectural guidance for your team or project.", "M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-4 4v-4z", "consulting"]
+    ].each do |title, body, icon, topic| %>
+      <%= link_to contact_path(topic: topic), class: "card card-lift p-6 flex gap-5 items-start group" do %>
+        <span class="icon-tile shrink-0"><svg class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="<%= icon %>"/></svg></span>
+        <span class="flex-1 min-w-0">
+          <span class="block font-semibold text-ink"><%= title %></span>
+          <span class="block mt-1.5 text-sm text-ink-2 leading-relaxed"><%= body %></span>
         </span>
-        <%= @profile.availability_text || "Available for new projects" %>
-      </div>
+        <span class="text-ink-3 group-hover:text-ink group-hover:translate-x-0.5 transition-all pt-1" aria-hidden="true">→</span>
+      <% end %>
     <% end %>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════ SERVICES GRID ═══════════════════════════════════════ -->
-<section class="py-24" data-controller="scroll-reveal">
-  <div class="max-w-6xl mx-auto px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-      <!-- Full-Stack Development -->
-      <div class="glass-hover rounded-2xl p-8 reveal group">
-        <div class="w-14 h-14 rounded-2xl bg-primary-600/15 flex items-center justify-center mb-6 group-hover:bg-primary-600/25 transition-colors">
-          <svg class="w-7 h-7 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-white mb-3">Full-Stack Development</h3>
-        <p class="text-surface-400 text-sm leading-relaxed mb-6">
-          End-to-end web applications built with modern technologies, optimized for performance, scalability, and maintainability.
-        </p>
-        <ul class="space-y-2.5">
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-primary-500 shrink-0"></span>
-            Ruby on Rails applications
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-primary-500 shrink-0"></span>
-            React & modern JavaScript
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-primary-500 shrink-0"></span>
-            PostgreSQL & database design
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-primary-500 shrink-0"></span>
-            RESTful & GraphQL APIs
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-primary-500 shrink-0"></span>
-            Hotwire & real-time features
-          </li>
-        </ul>
-      </div>
-
-      <!-- AI Integration -->
-      <div class="glass-hover rounded-2xl p-8 reveal group" style="animation-delay: 0.1s;">
-        <div class="w-14 h-14 rounded-2xl bg-accent-600/15 flex items-center justify-center mb-6 group-hover:bg-accent-600/25 transition-colors">
-          <svg class="w-7 h-7 text-accent-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-2.47 2.47a2.25 2.25 0 01-1.591.659H9.061a2.25 2.25 0 01-1.591-.659L5 14.5m14 0V17a2.25 2.25 0 01-2.25 2.25H7.25A2.25 2.25 0 015 17v-2.5"/>
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-white mb-3">AI Integration</h3>
-        <p class="text-surface-400 text-sm leading-relaxed mb-6">
-          Enhance your applications with intelligent features powered by large language models and machine learning capabilities.
-        </p>
-        <ul class="space-y-2.5">
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-accent-500 shrink-0"></span>
-            LLM integration (OpenAI, Claude)
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-accent-500 shrink-0"></span>
-            Smart search & recommendations
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-accent-500 shrink-0"></span>
-            Workflow automation
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-accent-500 shrink-0"></span>
-            Natural language processing
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-accent-500 shrink-0"></span>
-            AI-powered content features
-          </li>
-        </ul>
-      </div>
-
-      <!-- Technical Consulting -->
-      <div class="glass-hover rounded-2xl p-8 reveal group" style="animation-delay: 0.2s;">
-        <div class="w-14 h-14 rounded-2xl bg-emerald-600/15 flex items-center justify-center mb-6 group-hover:bg-emerald-600/25 transition-colors">
-          <svg class="w-7 h-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605"/>
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-white mb-3">Technical Consulting</h3>
-        <p class="text-surface-400 text-sm leading-relaxed mb-6">
-          Strategic guidance for your technology decisions, from architecture design to performance optimization and team scaling.
-        </p>
-        <ul class="space-y-2.5">
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-emerald-500 shrink-0"></span>
-            Architecture review & design
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-emerald-500 shrink-0"></span>
-            Performance optimization
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-emerald-500 shrink-0"></span>
-            Scaling strategies
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-emerald-500 shrink-0"></span>
-            Code audit & best practices
-          </li>
-          <li class="flex items-center gap-2.5 text-sm text-surface-400">
-            <span class="w-1 h-1 rounded-full bg-emerald-500 shrink-0"></span>
-            DevOps & deployment setup
-          </li>
-        </ul>
-      </div>
-
+<section class="py-10" data-controller="reveal">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" data-reveal="stagger">
+      <% [["01", "Discovery call", "Thirty minutes on what you are building, who it is for and what already exists. Free."], ["02", "Written plan", "Scope, schema sketch, milestones and a fixed price or weekly rate."], ["03", "Build in the open", "A staging URL from week one. Tests and CI from the first commit."], ["04", "Launch and stay", "Deploy, monitoring, backups and a handover doc. I stay on for the next phase if you want."]].each do |n, title, body| %>
+        <div class="card p-5"><p class="text-xs text-ink-3"><%= n %></p><h3 class="mt-1 font-semibold text-ink"><%= title %></h3><p class="mt-2 text-sm text-ink-2 leading-relaxed"><%= body %></p></div>
+      <% end %>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════ MY PROCESS ═══════════════════════════════════════ -->
-<section class="py-24" data-controller="scroll-reveal">
-  <div class="max-w-6xl mx-auto px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3 reveal">How I Work</p>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-white reveal section-line-center">My Process</h2>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Step 1: Discovery -->
-      <div class="relative glass-hover rounded-2xl p-6 reveal">
-        <div class="text-5xl font-extrabold text-surface-800 absolute top-4 right-4 select-none">01</div>
-        <div class="relative">
-          <div class="w-12 h-12 rounded-xl bg-primary-600/15 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Discovery</h3>
-          <p class="text-surface-400 text-sm leading-relaxed">
-            Understanding your goals, users, and constraints through in-depth conversations and research.
-          </p>
-        </div>
-      </div>
-
-      <!-- Step 2: Planning -->
-      <div class="relative glass-hover rounded-2xl p-6 reveal" style="animation-delay: 0.1s;">
-        <div class="text-5xl font-extrabold text-surface-800 absolute top-4 right-4 select-none">02</div>
-        <div class="relative">
-          <div class="w-12 h-12 rounded-xl bg-primary-600/15 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
-            </svg>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Planning</h3>
-          <p class="text-surface-400 text-sm leading-relaxed">
-            Defining the architecture, selecting the right tools, and creating a clear roadmap with milestones.
-          </p>
-        </div>
-      </div>
-
-      <!-- Step 3: Development -->
-      <div class="relative glass-hover rounded-2xl p-6 reveal" style="animation-delay: 0.2s;">
-        <div class="text-5xl font-extrabold text-surface-800 absolute top-4 right-4 select-none">03</div>
-        <div class="relative">
-          <div class="w-12 h-12 rounded-xl bg-primary-600/15 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-            </svg>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Development</h3>
-          <p class="text-surface-400 text-sm leading-relaxed">
-            Building iteratively with clean code, automated tests, and regular check-ins to keep you in the loop.
-          </p>
-        </div>
-      </div>
-
-      <!-- Step 4: Launch -->
-      <div class="relative glass-hover rounded-2xl p-6 reveal" style="animation-delay: 0.3s;">
-        <div class="text-5xl font-extrabold text-surface-800 absolute top-4 right-4 select-none">04</div>
-        <div class="relative">
-          <div class="w-12 h-12 rounded-xl bg-primary-600/15 flex items-center justify-center mb-5">
-            <svg class="w-6 h-6 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
-            </svg>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Launch</h3>
-          <p class="text-surface-400 text-sm leading-relaxed">
-            Deploying to production with monitoring, documentation, and ongoing support to ensure success.
-          </p>
-        </div>
-      </div>
-    </div>
+<% if @examples.any? %>
+<section class="py-6" data-controller="reveal">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div class="flex items-end justify-between mb-6"><div><p class="eyebrow" data-reveal="fade">Proof</p><h2 class="section-title mt-2" data-reveal="up">Recent builds</h2></div><%= link_to "All projects →", projects_path, class: "text-sm text-ink-2 hover:text-ink" %></div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" data-reveal="stagger"><% @examples.each do |project| %><%= render "components/project_card", project: project %><% end %></div>
   </div>
 </section>
+<% end %>
 
-<!-- ═══════════════════════════════════════ CTA ═══════════════════════════════════════ -->
-<section class="py-24" data-controller="scroll-reveal">
-  <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
-    <div class="reveal">
-      <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3">Start a Project</p>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Ready to start?</h2>
-      <p class="mt-4 text-surface-400 max-w-xl mx-auto">
-        Whether you need a full application built from scratch, AI features integrated into your product, or strategic technical guidance, I'd love to hear about your project.
-      </p>
-      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-        <%= link_to contact_path, class: "group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-semibold hover:bg-surface-100 transition-all hover:-translate-y-0.5 shadow-2xl shadow-white/5" do %>
-          Get in Touch
-          <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        <% end %>
-        <%= link_to projects_path, class: "inline-flex items-center gap-2 px-6 py-4 rounded-full border border-surface-700 text-white font-medium text-sm hover:border-surface-500 hover:bg-surface-900 transition-all" do %>
-          View My Work
-        <% end %>
-      </div>
+<section class="py-10" data-controller="reveal">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div class="card p-8 sm:p-10 text-center" data-reveal="scale">
+      <h2 class="display-serif text-4xl sm:text-5xl">Have a project in mind?</h2>
+      <p class="mt-3 max-w-lg mx-auto text-sm sm:text-[15px] text-ink-2 leading-relaxed">I'm open to discussing new projects, creative ideas, or opportunities to be part of something great.</p>
+      <%= link_to contact_path, class: "btn btn-primary mt-6", data: { controller: "magnetic" } do %>Let's Work Together <span aria-hidden="true">→</span><% end %>
+      <span class="glow-blob -right-24 -bottom-28"></span>
     </div>
   </div>
 </section>

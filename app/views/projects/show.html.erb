@@ -1,184 +1,120 @@
-<section class="py-24">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Back link -->
-    <div class="mb-8 animate-fade-in">
-      <%= link_to projects_path, class: "inline-flex items-center gap-2 text-surface-500 hover:text-white transition-colors text-xs font-mono uppercase tracking-wider" do %>
-        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
-        Back to Projects
-      <% end %>
-    </div>
+<% p = @project %>
+<% content_for :head do %>
+  <%= json_ld_tag({ "@context": "https://schema.org", "@type": "CreativeWork", "name": p.title, "description": p.tagline.presence || p.summary, "url": project_url(p), "author": { "@type": "Person", "name": current_profile.full_name } }) %>
+<% end %>
 
-    <!-- Cover Image -->
-    <% if @project.cover_image.attached? %>
-      <div class="aspect-video rounded-2xl overflow-hidden mb-8 animate-fade-in-up">
-        <%= image_tag @project.cover_image, class: "w-full h-full object-cover" %>
-      </div>
-    <% end %>
-
-    <!-- Header -->
-    <div class="animate-fade-in-up" style="animation-delay: 0.1s; opacity: 0;">
-      <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3">Project</p>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-white section-line"><%= @project.title %></h1>
-
-      <% if @project.summary.present? %>
-        <p class="mt-4 text-lg text-surface-500 leading-relaxed"><%= @project.summary %></p>
-      <% end %>
-
-      <!-- Meta -->
-      <div class="mt-6 flex flex-wrap items-center gap-4">
-        <% if @project.tech_stack.any? %>
-          <div class="flex flex-wrap gap-1.5">
-            <% @project.tech_stack.each do |tech| %>
-              <span class="px-2.5 py-1 rounded-full bg-surface-900 text-surface-400 text-xs font-mono"><%= tech %></span>
-            <% end %>
+<article data-controller="lightbox">
+  <section class="pt-28 pb-6 sm:pt-36" data-controller="reveal">
+    <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+      <%= link_to projects_path, class: "inline-flex items-center gap-2 text-sm text-ink-2 hover:text-ink", data: { reveal: "fade" } do %><span aria-hidden="true">←</span> Back to projects<% end %>
+      <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-5">
+          <p class="text-xs text-ink-3" data-reveal="fade"><%= [p.category.presence || p.type_label, p.year, p.role].compact_blank.join(" · ") %></p>
+          <h1 class="display-serif text-5xl sm:text-6xl mt-3" data-reveal="up"><%= p.title %></h1>
+          <% if p.tagline.present? %><p class="mt-5 text-[15px] sm:text-base text-ink-2 leading-relaxed" data-reveal="up" data-reveal-delay="0.05"><%= p.tagline %></p><% end %>
+          <% if p.tech_stack.any? %>
+            <div class="mt-6 flex flex-wrap gap-1.5" data-reveal="fade" data-reveal-delay="0.1"><% p.tech_stack.first(5).each do |t| %><span class="chip"><%= t %></span><% end %></div>
+          <% end %>
+          <div class="mt-8 flex flex-wrap gap-3" data-reveal="fade" data-reveal-delay="0.15">
+            <% if p.live? %><a href="<%= p.live_url %>" target="_blank" rel="noopener" class="btn btn-primary" data-controller="magnetic">View Live Project <span aria-hidden="true">→</span></a><% end %>
+            <% if p.github_url.present? %><a href="<%= p.github_url %>" target="_blank" rel="noopener" class="btn btn-glass">Source code</a><% end %>
           </div>
-        <% end %>
-      </div>
-
-      <!-- Links -->
-      <div class="mt-6 flex items-center gap-4">
-        <% if @project.live_url.present? %>
-          <a href="<%= @project.live_url %>" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            Live Demo
-          </a>
-        <% end %>
-        <% if @project.github_url.present? %>
-          <a href="<%= @project.github_url %>" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-surface-800 text-white text-sm font-medium hover:bg-surface-900 transition-colors">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            Source Code
-          </a>
-        <% end %>
-      </div>
-    </div>
-
-    <!-- Body -->
-    <% if @project.body.present? %>
-      <div class="mt-12 prose prose-invert prose-primary max-w-none animate-fade-in-up" style="animation-delay: 0.3s; opacity: 0;">
-        <%= @project.body %>
-      </div>
-    <% end %>
-
-    <!-- Case Study -->
-    <% if @project.challenge.present? || @project.solution.present? || @project.results.present? %>
-      <div class="mt-16 space-y-10" data-controller="scroll-reveal">
-        <div class="text-center mb-8 reveal">
-          <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3">Deep Dive</p>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-white section-line-center">Case Study</h2>
         </div>
-
-        <% if @project.challenge.present? %>
-          <div class="glass-hover rounded-2xl p-6 sm:p-8 reveal">
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-xl bg-red-500/15 flex items-center justify-center shrink-0 mt-0.5">
-                <svg class="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-bold text-white mb-3">The Challenge</h3>
-                <p class="text-surface-400 leading-relaxed"><%= simple_format(@project.challenge) %></p>
-              </div>
+        <div class="lg:col-span-7" data-reveal="right">
+          <div class="tilt-3d">
+            <div class="shot aspect-[16/10] cursor-zoom-in" data-lightbox-src="<%= url_for(p.cover_image) if p.cover_image.attached? %>" data-lightbox-caption="<%= p.title %>" data-action="click->lightbox#open">
+              <% if p.cover_image.attached? %><%= image_tag p.cover_image, alt: p.title, loading: "eager" %><% end %>
             </div>
           </div>
-        <% end %>
-
-        <% if @project.solution.present? %>
-          <div class="glass-hover rounded-2xl p-6 sm:p-8 reveal">
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-xl bg-primary-500/15 flex items-center justify-center shrink-0 mt-0.5">
-                <svg class="w-5 h-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-bold text-white mb-3">The Solution</h3>
-                <p class="text-surface-400 leading-relaxed"><%= simple_format(@project.solution) %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
-        <% if @project.results.present? %>
-          <div class="glass-hover rounded-2xl p-6 sm:p-8 reveal">
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center shrink-0 mt-0.5">
-                <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/>
-                </svg>
-              </div>
-              <div class="flex-1">
-                <h3 class="text-lg font-bold text-white mb-3">The Results</h3>
-                <p class="text-surface-400 leading-relaxed"><%= simple_format(@project.results) %></p>
-
-                <% if @project.metrics.present? %>
-                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
-                    <% @project.metrics.strip.split("\n").each do |line| %>
-                      <% parts = line.split(":", 2) %>
-                      <% if parts.length == 2 %>
-                        <div class="glass rounded-xl p-4 text-center">
-                          <div class="text-lg font-bold text-white"><%= parts[1].strip %></div>
-                          <div class="text-[11px] font-mono text-surface-500 uppercase tracking-wider mt-1"><%= parts[0].strip %></div>
-                        </div>
-                      <% end %>
-                    <% end %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
-        <% if @project.client_name.present? %>
-          <div class="flex items-center gap-4 pt-4 reveal">
-            <div class="w-11 h-11 rounded-full bg-surface-800 flex items-center justify-center text-surface-400 text-sm font-bold">
-              <%= @project.client_name.first %>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-white"><%= @project.client_name %></p>
-              <% if @project.client_role.present? %>
-                <p class="text-xs text-surface-500"><%= @project.client_role %></p>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
+        </div>
       </div>
-    <% end %>
-
-    <!-- Image Gallery -->
-    <% if @project.images.attached? %>
-      <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4" data-controller="scroll-reveal">
-        <% @project.images.each do |image| %>
-          <div class="rounded-2xl overflow-hidden reveal">
-            <%= image_tag image, class: "w-full h-auto", loading: "lazy" %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <!-- Prev/Next Navigation -->
-    <div class="mt-16 flex items-center justify-between border-t border-surface-900 pt-8">
-      <% if @prev_project %>
-        <%= link_to project_path(@prev_project.slug), class: "flex items-center gap-3 group" do %>
-          <svg class="w-4 h-4 text-surface-500 group-hover:text-primary-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
-          <div>
-            <p class="text-xs font-mono text-surface-500 uppercase tracking-wider">Previous</p>
-            <p class="text-sm text-surface-400 group-hover:text-white transition-colors"><%= @prev_project.title %></p>
-          </div>
-        <% end %>
-      <% else %>
-        <div></div>
-      <% end %>
-
-      <% if @next_project %>
-        <%= link_to project_path(@next_project.slug), class: "flex items-center gap-3 text-right group" do %>
-          <div>
-            <p class="text-xs font-mono text-surface-500 uppercase tracking-wider">Next</p>
-            <p class="text-sm text-surface-400 group-hover:text-white transition-colors"><%= @next_project.title %></p>
-          </div>
-          <svg class="w-4 h-4 text-surface-500 group-hover:text-primary-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        <% end %>
-      <% end %>
     </div>
-  </div>
-</section>
+  </section>
+
+  <section class="py-12 sm:py-16" data-controller="reveal">
+    <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+      <div class="lg:col-span-7 space-y-12">
+        <% if p.summary.present? || p.body.present? %>
+          <div data-reveal="up">
+            <h2 class="section-title">Overview</h2>
+            <% if p.summary.present? %><p class="mt-3 text-[15px] text-ink-2 leading-relaxed"><%= p.summary %></p><% end %>
+            <% if p.body.present? %><div class="prose-glass mt-4 !text-[15px]"><%= p.body %></div><% end %>
+          </div>
+        <% end %>
+        <% if p.highlights.any? %>
+          <div data-reveal="up">
+            <h2 class="section-title">Key Features</h2>
+            <ul class="check-list mt-4 space-y-2.5 text-[15px] text-ink-2 leading-relaxed"><% p.highlights.each do |h| %><li><span><%= h %></span></li><% end %></ul>
+          </div>
+        <% end %>
+        <% { "The Challenge" => p.challenge, "The Approach" => p.solution, "The Outcome" => p.results }.each do |title, text| %>
+          <% next if text.blank? %>
+          <div data-reveal="up"><h2 class="section-title"><%= title %></h2><div class="mt-3 text-[15px] text-ink-2 leading-relaxed space-y-3"><%= simple_format(text, {}, wrapper_tag: "p") %></div></div>
+        <% end %>
+      </div>
+
+      <aside class="lg:col-span-5 space-y-5 lg:sticky lg:top-24 self-start">
+        <% if p.tech_stack.any? %>
+          <div class="card p-6" data-reveal="right">
+            <h2 class="font-semibold text-ink">Tech Stack</h2>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <% p.tech_stack.each do |t| %><span class="tech-chip"><%= tech_icon(t.sub(/\s*\d+(\.\d+)?\z/, ""), css: "w-4 h-4") %><%= t %></span><% end %>
+            </div>
+          </div>
+        <% end %>
+        <div class="card p-6" data-reveal="right" data-reveal-delay="0.05">
+          <dl class="text-sm divide-y divide-line">
+            <% [["Type", p.type_label], ["Role", p.role], ["Year", p.year], ["Client", p.client_name], ["Status", p.status&.titleize]].reject { |_, v| v.blank? }.each do |label, value| %>
+              <div class="py-3 flex justify-between gap-4"><dt class="text-ink-3"><%= label %></dt><dd class="text-ink text-right"><%= value %></dd></div>
+            <% end %>
+          </dl>
+          <% if p.metrics_list.any? %>
+            <dl class="mt-4 grid grid-cols-2 gap-3"><% p.metrics_list.each do |label, value| %><div class="rounded-xl border border-line p-3"><dd class="display text-xl text-ink"><%= value %></dd><dt class="text-xs text-ink-3 mt-0.5"><%= label %></dt></div><% end %></dl>
+          <% end %>
+        </div>
+        <% if @siblings.any? %>
+          <div class="card p-6" data-reveal="right" data-reveal-delay="0.1">
+            <h2 class="font-semibold text-ink">Same family</h2>
+            <ul class="mt-3 space-y-2 text-sm"><% @siblings.each do |s| %><li><%= link_to "#{s.title} →", project_path(s), class: "text-ink-2 hover:text-ink" %></li><% end %></ul>
+          </div>
+        <% end %>
+      </aside>
+    </div>
+  </section>
+
+  <% desktop = p.desktop_images; mobile = p.mobile_images %>
+  <% if desktop.any? || mobile.any? %>
+    <section class="py-10" data-controller="reveal">
+      <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+        <h2 class="section-title mb-6" data-reveal="fade">Screens</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5" data-reveal="stagger">
+          <% desktop.each do |img| %><div class="card p-2.5"><%= render "components/browser_frame", image: img, alt: "#{p.title} screen", lightbox: true %></div><% end %>
+        </div>
+        <% if mobile.any? %>
+          <div class="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-5" data-reveal="stagger">
+            <% mobile.each do |img| %><div class="card p-2"><%= render "components/phone_frame", image: img, alt: "#{p.title} mobile", lightbox: true %></div><% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <section class="py-10">
+    <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 flex justify-between gap-4 text-sm">
+      <% if @prev_project && @prev_project != p %><%= link_to "← #{@prev_project.title}", project_path(@prev_project), class: "btn btn-glass btn-sm" %><% else %><span></span><% end %>
+      <% if @next_project && @next_project != p %><%= link_to "#{@next_project.title} →", project_path(@next_project), class: "btn btn-glass btn-sm" %><% end %>
+    </div>
+  </section>
+
+  <dialog data-lightbox-target="dialog" data-action="click->lightbox#closeOnBackdrop" class="fixed inset-0 z-[100] m-0 p-0 w-full h-full max-w-none max-h-none bg-transparent backdrop:bg-black/85 backdrop:backdrop-blur-sm">
+    <div class="w-full h-full flex items-center justify-center p-4 sm:p-10">
+      <figure class="relative max-w-6xl w-full">
+        <img data-lightbox-target="image" src="" alt="" class="w-full max-h-[82vh] object-contain rounded-lg">
+        <figcaption class="mt-3 flex items-center justify-between text-xs text-white/70"><span data-lightbox-target="caption"></span><span data-lightbox-target="counter"></span></figcaption>
+        <button data-action="lightbox#prev" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white" aria-label="Previous">←</button>
+        <button data-action="lightbox#next" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white" aria-label="Next">→</button>
+        <button data-action="lightbox#close" class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white" aria-label="Close">×</button>
+      </figure>
+    </div>
+  </dialog>
+</article>

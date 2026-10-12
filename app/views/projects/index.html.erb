@@ -1,65 +1,45 @@
-<section class="py-24">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16 animate-fade-in-up">
-      <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3">Portfolio</p>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-white section-line-center">Projects</h1>
-      <p class="mt-4 text-base text-surface-500">
-        A showcase of my work and contributions
-      </p>
-    </div>
-
-    <!-- Filter UI -->
-    <div class="mb-10 animate-fade-in-up" style="animation-delay: 0.2s; opacity: 0;">
-      <!-- Type filter pills -->
-      <% if @project_types.any? %>
-        <div class="flex flex-wrap justify-center gap-2 mb-4">
-          <span class="text-xs font-mono text-surface-500 uppercase tracking-wider self-center mr-2">Type:</span>
-          <%= link_to "All", projects_path(tech: params[:tech].presence),
-              data: { turbo_frame: "projects" },
-              class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{params[:type].blank? ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
-          <% @project_types.each do |type| %>
-            <%= link_to type.titleize, projects_path(type: type, tech: params[:tech].presence),
-                data: { turbo_frame: "projects" },
-                class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{params[:type] == type ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
-          <% end %>
-        </div>
+<section class="pt-32 pb-10 sm:pt-40" data-controller="reveal">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+    <h1 class="display-serif text-5xl sm:text-6xl" data-reveal="up">Featured Work</h1>
+    <p class="mt-5 max-w-xl text-[15px] sm:text-base text-ink-2 leading-relaxed" data-reveal="up" data-reveal-delay="0.05">A selection of products, experiments and client work I've built. Each project is a real solution to a real problem.</p>
+    <div class="mt-7 flex flex-wrap items-center gap-2" data-reveal="fade" data-reveal-delay="0.1">
+      <%= link_to "All", projects_path, data: { turbo_frame: "projects", turbo_action: "advance" }, class: "chip #{'chip-active' if params[:type].blank? && params[:tech].blank?}" %>
+      <% @types.each do |type| %>
+        <%= link_to Project::TYPES[type] || type.titleize, projects_path(type: type), data: { turbo_frame: "projects", turbo_action: "advance" }, class: "chip #{'chip-active' if params[:type] == type}" %>
       <% end %>
-
-      <!-- Tech filter pills -->
-      <% if @all_tech.any? %>
-        <div class="flex flex-wrap justify-center gap-2">
-          <span class="text-xs font-mono text-surface-500 uppercase tracking-wider self-center mr-2">Tech:</span>
-          <%= link_to "All", projects_path(type: params[:type].presence),
-              data: { turbo_frame: "projects" },
-              class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{params[:tech].blank? ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
-          <% @all_tech.first(12).each do |tech| %>
-            <%= link_to tech, projects_path(tech: tech, type: params[:type].presence),
-                data: { turbo_frame: "projects" },
-                class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{params[:tech] == tech ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
-          <% end %>
-        </div>
+      <% @all_tech.first(4).each do |tech| %>
+        <%= link_to tech, projects_path(tech: tech), data: { turbo_frame: "projects", turbo_action: "advance" }, class: "chip #{'chip-active' if params[:tech] == tech}" %>
       <% end %>
     </div>
+  </div>
+</section>
 
+<section class="pb-20">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
     <%= turbo_frame_tag "projects" do %>
       <% if @projects.any? %>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-controller="scroll-reveal">
-          <% @projects.each do |project| %>
-            <div class="reveal" data-controller="card-tilt">
-              <%= render "components/project_card", project: project %>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" data-controller="reveal">
+          <% @projects.each_with_index do |project, i| %>
+            <%= link_to project_path(project), class: "card card-lift p-5 group block", data: { reveal: "up", reveal_delay: (i % 2) * 0.06 } do %>
+              <div class="shot aspect-[16/9]">
+                <% if project.cover_image.attached? %><%= image_tag project.cover_image, alt: project.title, loading: "lazy" %><% else %><div class="w-full h-full grid place-items-center text-ink-3 text-3xl font-semibold"><%= project.title.first(2).upcase %></div><% end %>
+              </div>
+              <div class="mt-5 flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                  <p class="text-xs text-ink-3"><%= project.category.presence || project.type_label %></p>
+                  <h3 class="mt-1 text-lg font-semibold tracking-tight text-ink"><%= project.title %></h3>
+                  <p class="mt-1.5 text-sm text-ink-2 leading-relaxed line-clamp-2"><%= project.tagline.presence || project.summary %></p>
+                </div>
+                <span class="icon-tile !rounded-full shrink-0 group-hover:bg-ink group-hover:text-canvas transition-colors" aria-hidden="true">→</span>
+              </div>
+              <% if project.tech_stack.any? %>
+                <div class="mt-4 flex flex-wrap gap-1.5"><% project.tech_stack.first(4).each do |t| %><span class="chip"><%= t %></span><% end %></div>
+              <% end %>
+            <% end %>
           <% end %>
         </div>
       <% else %>
-        <div class="text-center glass-hover rounded-2xl p-12">
-          <p class="text-surface-500">
-            <% if params[:type].present? || params[:tech].present? %>
-              No projects found matching your filters. Try a different combination.
-            <% else %>
-              Projects coming soon.
-            <% end %>
-          </p>
-        </div>
+        <div class="card p-12 text-center text-ink-2">Nothing here yet. <%= link_to "Show everything", projects_path, class: "underline underline-offset-4", data: { turbo_frame: "projects" } %></div>
       <% end %>
     <% end %>
   </div>

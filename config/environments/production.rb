@@ -47,17 +47,18 @@ Rails.application.configure do
   config.active_support.report_deprecations = false
 
   # Use in-memory cache (no external database table needed).
-  config.cache_store = :memory_store
+  config.cache_store = :solid_cache_store
 
   # Use async queue adapter (runs jobs in-process, no Solid Queue tables needed).
-  config.active_job.queue_adapter = :async
+  config.active_job.queue_adapter = :solid_queue
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  config.action_mailer.default_url_options = { host: ENV.fetch("APP_HOST", "oluwintan.com"), protocol: "https" }
+  config.action_mailer.asset_host = "https://#{ENV.fetch("APP_HOST", "oluwintan.com")}"
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {

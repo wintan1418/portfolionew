@@ -1,113 +1,50 @@
-<section class="py-24">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16 animate-fade-in-up">
-      <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3">Blog</p>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-white section-line-center">Thoughts & Writing</h1>
-      <p class="mt-4 text-base text-surface-500">
-        Thoughts on technology, engineering, and building products
-      </p>
-    </div>
-
-    <!-- Search & Category Filters -->
-    <div class="mb-10 animate-fade-in-up" style="animation-delay: 0.2s; opacity: 0;" data-controller="search">
-      <!-- Search bar -->
-      <div class="max-w-md mx-auto mb-6">
-        <%= form_with url: blog_path, method: :get, data: { turbo_frame: "posts", search_target: "form" } do |f| %>
-          <% if params[:category].present? %>
-            <%= hidden_field_tag :category, params[:category] %>
-          <% end %>
-          <div class="relative">
-            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-            <input type="text" name="search" value="<%= params[:search] %>" placeholder="Search posts..."
-                   autocomplete="off"
-                   class="w-full rounded-full bg-surface-900 border border-surface-800 text-white px-4 py-2 text-sm pl-11 focus:outline-none focus:border-primary-500/50 focus:ring-1 focus:ring-primary-500/30 placeholder-surface-600"
-                   data-search-target="input"
-                   data-action="input->search#submit">
-          </div>
-        <% end %>
-      </div>
-
-      <!-- Category filter pills -->
+<section class="pt-32 pb-10 sm:pt-40" data-controller="reveal">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+    <h1 class="display-serif text-5xl sm:text-6xl" data-reveal="up">Insights & Ideas</h1>
+    <p class="mt-5 max-w-xl text-[15px] sm:text-base text-ink-2 leading-relaxed" data-reveal="up" data-reveal-delay="0.05">Thoughts, tutorials and lessons from building real products.</p>
+    <div class="mt-7 flex flex-col sm:flex-row sm:items-center gap-3" data-reveal="fade" data-reveal-delay="0.1" data-controller="search">
+      <%= form_with url: blog_path, method: :get, data: { turbo_frame: "posts", turbo_action: "advance", search_target: "form" }, class: "w-full sm:max-w-sm" do |f| %>
+        <% if params[:category].present? %><%= hidden_field_tag :category, params[:category] %><% end %>
+        <div class="relative">
+          <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" name="search" value="<%= params[:search] %>" placeholder="Search articles..." autocomplete="off" class="field !rounded-full !pl-10 !py-2.5" data-search-target="input" data-action="input->search#submit">
+        </div>
+      <% end %>
       <% if @categories.any? %>
-        <div class="flex flex-wrap justify-center gap-2">
-          <%= link_to "All", blog_path(search: params[:search].presence),
-              data: { turbo_frame: "posts" },
-              class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{!@category ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
+        <div class="flex flex-wrap gap-2">
+          <%= link_to "All", blog_path(search: params[:search].presence), data: { turbo_frame: "posts", turbo_action: "advance" }, class: "chip #{'chip-active' unless @category}" %>
           <% @categories.each do |cat| %>
-            <%= link_to cat.name, blog_path(category: cat.slug, search: params[:search].presence),
-                data: { turbo_frame: "posts" },
-                class: "px-3 py-1 rounded-full text-xs font-mono transition-colors #{@category&.id == cat.id ? 'bg-primary-600 text-white' : 'bg-surface-900 text-surface-400 hover:text-white'}" %>
+            <%= link_to cat.name, blog_path(category: cat.slug, search: params[:search].presence), data: { turbo_frame: "posts", turbo_action: "advance" }, class: "chip #{'chip-active' if @category&.id == cat.id}" %>
           <% end %>
         </div>
       <% end %>
     </div>
+  </div>
+</section>
 
+<section class="pb-20">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
     <%= turbo_frame_tag "posts" do %>
-      <!-- Featured Post -->
-      <% if defined?(@featured_post) && @featured_post && !@category %>
-        <div class="mb-12 animate-fade-in-up" style="animation-delay: 0.4s; opacity: 0;">
-          <%= link_to blog_post_path(@featured_post.slug), data: { turbo_frame: "_top" }, class: "block glass-hover rounded-2xl overflow-hidden group transition-all" do %>
-            <div class="grid grid-cols-1 md:grid-cols-2">
-              <div class="aspect-video md:aspect-auto bg-surface-900 overflow-hidden">
-                <% if @featured_post.cover_image.attached? %>
-                  <%= image_tag @featured_post.cover_image, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" %>
-                <% else %>
-                  <div class="w-full h-full min-h-[200px] flex items-center justify-center bg-gradient-to-br from-primary-950/80 to-surface-950">
-                    <span class="text-6xl font-extrabold text-primary-500/10 select-none"><%= @featured_post.title.first(2).upcase %></span>
-                  </div>
-                <% end %>
-              </div>
-              <div class="p-8 flex flex-col justify-center">
-                <div class="flex items-center gap-2 mb-3">
-                  <span class="px-2.5 py-0.5 rounded-full bg-primary-600/20 text-primary-400 text-xs font-mono uppercase tracking-wider">Featured</span>
-                  <% if @featured_post.category %>
-                    <span class="text-xs font-mono text-surface-500 uppercase tracking-wider"><%= @featured_post.category.name %></span>
-                  <% end %>
-                </div>
-                <h2 class="text-2xl font-bold text-white group-hover:text-primary-400 transition-colors"><%= @featured_post.title %></h2>
-                <% if @featured_post.excerpt.present? %>
-                  <p class="mt-3 text-surface-400 text-sm line-clamp-3"><%= @featured_post.excerpt %></p>
-                <% end %>
-                <div class="mt-4 flex items-center gap-3 text-xs font-mono text-surface-500 uppercase tracking-wider">
-                  <span><%= @featured_post.published_at&.strftime("%B %d, %Y") %></span>
-                  <% if @featured_post.reading_time %>
-                    <span>&middot; <%= @featured_post.reading_time %> min read</span>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-
-      <!-- Posts Grid -->
       <% if @posts.any? %>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-controller="scroll-reveal">
-          <% @posts.each do |post| %>
-            <div class="reveal">
-              <%= render "components/blog_card", post: post %>
-            </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3" data-controller="reveal">
+          <% @posts.each_with_index do |post, i| %>
+            <%= link_to blog_post_path(post.slug), data: { turbo_frame: "_top", reveal: "up", reveal_delay: (i % 2) * 0.05 }, class: "card card-lift p-3 flex items-center gap-4 group" do %>
+              <div class="shot w-28 sm:w-36 aspect-[4/3] shrink-0 !shadow-none">
+                <% if post.cover_image.attached? %><%= image_tag post.cover_image, loading: "lazy" %><% else %><div class="w-full h-full grid place-items-center text-ink-3 font-semibold"><%= post.title.first(2).upcase %></div><% end %>
+              </div>
+              <div class="flex-1 min-w-0 py-1">
+                <h3 class="font-semibold tracking-tight text-ink leading-snug line-clamp-2"><%= post.title %></h3>
+                <p class="mt-1.5 text-xs text-ink-3"><%= post.category&.name %><% if post.category && post.reading_time %> · <% end %><% if post.reading_time %><%= post.reading_time %> min read<% end %></p>
+              </div>
+              <span class="text-ink-3 group-hover:text-ink pr-2" aria-hidden="true">›</span>
+            <% end %>
           <% end %>
         </div>
-
-        <!-- Pagination -->
         <% if @pagy.pages > 1 %>
-          <div class="mt-12 flex justify-center">
-            <%== pagy_nav(@pagy) %>
-          </div>
+          <div class="mt-10 flex justify-center text-sm [&_nav]:flex [&_nav]:gap-1 [&_a]:chip [&_.current]:chip-active"><%== pagy_nav(@pagy) %></div>
         <% end %>
       <% else %>
-        <div class="text-center glass-hover rounded-2xl p-12">
-          <p class="text-surface-500">
-            <% if params[:search].present? || params[:category].present? %>
-              No posts found matching your criteria. Try a different search or category.
-            <% else %>
-              No posts yet. Check back soon!
-            <% end %>
-          </p>
-        </div>
+        <div class="card p-12 text-center text-ink-2">Nothing matches that yet.</div>
       <% end %>
     <% end %>
   </div>
