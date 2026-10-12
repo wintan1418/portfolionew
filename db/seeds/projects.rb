@@ -285,6 +285,9 @@ rescue StandardError => e
   puts "  (skip analyze #{blob.filename}: #{e.message})"
 end
 
+# Education correction: the degree is from Adekunle Ajasin University.
+Education.where(institution: "University of Lagos").update_all(institution: "Adekunle Ajasin University")
+
 # Profile tidy-up: the template left a markdown quote marker in the bio.
 profile = Profile.instance
 profile.bio = profile.bio.to_s.sub(/\A\s*>\s*/, "").sub(/\.\s*>\s*/, ". ") if profile.bio.present?
