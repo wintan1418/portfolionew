@@ -3,55 +3,41 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Admin | Wintan Portfolio</title>
+    <title><%= [yield(:page_title).presence, "Admin"].compact.join(" · ") %> | oluwintan.com</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "gsap.min", "ScrollTrigger.min", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-surface-950 text-surface-100 min-h-screen antialiased font-sans">
-    <div class="flex min-h-screen">
-      <!-- Sidebar -->
+  <body class="admin-shell bg-canvas text-ink min-h-screen antialiased font-sans">
+    <div class="backdrop" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="relative z-10 flex min-h-screen">
       <%= render "admin/shared/sidebar" %>
 
-      <!-- Main Content -->
-      <div class="flex-1 ml-64">
-        <!-- Top Bar -->
-        <header class="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-md border-b border-surface-800 px-6 py-4">
-          <div class="flex items-center justify-between">
-            <h1 class="text-lg font-semibold"><%= yield :page_title %></h1>
-            <div class="flex items-center gap-4">
-              <%= link_to root_path, class: "text-sm text-surface-400 hover:text-white transition-colors", target: "_blank" do %>
-                View Site &rarr;
-              <% end %>
-              <%= button_to "Logout", session_path, method: :delete, class: "text-sm text-surface-400 hover:text-red-400 transition-colors" %>
-            </div>
+      <div class="flex-1 lg:ml-64 min-w-0">
+        <header class="sticky top-0 z-30 admin-topbar px-5 sm:px-8 h-16 flex items-center justify-between">
+          <h1 class="text-base font-semibold tracking-tight text-ink"><%= yield :page_title %></h1>
+          <div class="flex items-center gap-2">
+            <%= link_to root_path, class: "btn btn-glass btn-sm", target: "_blank" do %>View site ↗<% end %>
+            <%= button_to "Log out", session_path, method: :delete, class: "btn btn-ghost btn-sm" %>
           </div>
         </header>
 
-        <!-- Flash Messages -->
-        <% if notice %>
-          <div class="mx-6 mt-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 px-4 py-3 rounded-lg text-sm">
-            <%= notice %>
+        <% if notice.present? || alert.present? %>
+          <div class="mx-5 sm:mx-8 mt-5 card px-4 py-3 text-sm flex items-center gap-3 <%= notice.present? ? 'text-emerald-300' : 'text-rose-300' %>" data-controller="toast" data-toast-delay-value="6000">
+            <span class="live-dot" style="<%= 'background:#f43f5e' if alert.present? %>"></span>
+            <span class="text-ink"><%= notice.presence || alert %></span>
           </div>
         <% end %>
 
-        <% if alert %>
-          <div class="mx-6 mt-4 bg-red-500/10 border border-red-500/20 text-red-300 px-4 py-3 rounded-lg text-sm">
-            <%= alert %>
-          </div>
-        <% end %>
-
-        <!-- Page Content -->
-        <div class="p-6">
+        <main class="p-5 sm:p-8 admin-content">
           <%= yield %>
-        </div>
+        </main>
       </div>
     </div>
   </body>

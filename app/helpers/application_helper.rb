@@ -84,12 +84,12 @@ module ApplicationHelper
   end
 
   def admin_nav_link(label, path, icon_path)
-    active = current_page?(path)
+    active = current_page?(path) || (path != admin_root_path && request.path.start_with?(path))
     link_to path, class: [
-      "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-      active ? "text-white bg-primary-600/20 text-primary-300" : "text-surface-400 hover:text-white hover:bg-surface-800"
+      "admin-nav-link flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-colors",
+      active ? "is-active" : ""
     ].join(" ") do
-      content_tag(:svg, content_tag(:path, nil, d: icon_path, "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2"),
+      content_tag(:svg, content_tag(:path, nil, d: icon_path, "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "1.6"),
         class: "w-4 h-4 shrink-0", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor") +
       content_tag(:span, label)
     end

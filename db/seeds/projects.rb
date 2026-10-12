@@ -221,16 +221,28 @@ PROJECTS = [
   },
   {
     slug: "tenant-kit", category: "Rails gem", title: "tenant_kit", position: 14, featured: false, project_type: "open_source", family: nil,
-    github_url: "https://github.com/wintan1418/tenant_kit", role: "Author", completed_on: Date.new(2026, 7, 1), status: "active", accent_color: "#a78bfa",
-    tagline: "Row-level, shared-schema multi-tenancy for Rails. Strict by default, with background-job support.",
-    summary: "A gem that scopes every query to the current tenant, refuses to run unscoped by default, and carries the tenant through Active Job so background work stays isolated.",
-    highlights: [ "Strict mode raises on unscoped queries", "Tenant context propagated through Active Job", "Works with shared-schema PostgreSQL" ],
-    tech_stack: [ "Ruby", "Rails", "Active Record", "Active Job" ]
+    github_url: "https://github.com/wintan1418/tenant_kit", live_url: "https://rubygems.org/gems/tenant_kit", rubygem_name: "tenant_kit",
+    role: "Author and maintainer", completed_on: Date.new(2026, 7, 1), status: "active", accent_color: "#cc342d",
+    tagline: "Row-level multi-tenancy for Rails, strict by default. One database, a tenant key on every owned table, and no cross-tenant leaks, not even in background jobs.",
+    summary: "tenant_kit is a Ruby gem published on RubyGems under the MIT licence. It makes a Rails app multi-tenant with the shared-schema strategy: a tenant_id on owned tables, automatic query scoping through ActiveSupport::CurrentAttributes, auto-assignment of the current tenant on create, and first-class propagation of the tenant into Active Job. It is strict by default: querying a tenant-scoped model with no tenant set raises instead of returning another tenant's data.",
+    highlights: [
+      "belongs_to_tenant scopes every read, assigns the tenant on create and validates its presence",
+      "Strict mode: a query with no current tenant raises NoTenantSet rather than leaking rows",
+      "The current tenant rides into Active Job through GlobalID and is restored around perform, so it survives Solid Queue",
+      "One-line request resolution by subdomain, domain, header or a custom filter",
+      "validates_uniqueness_to_tenant folds the tenant into uniqueness checks",
+      "TenantKit.without_tenant is the loud, greppable escape hatch",
+      "Zero runtime dependencies beyond Rails; Ruby 3.3+ and Rails 7.2+ with Rails 8 as the primary target"
+    ],
+    tech_stack: [ "Ruby", "Rails", "Active Record", "Active Job", "Minitest", "GitHub Actions" ],
+    challenge: "Most Rails SaaS apps end up multi-tenant, and the row-level approach is the easiest to operate. But the usual gems leave the dangerous part to you: forget to set a tenant and a query quietly returns everyone's data. Background jobs are the classic leak, because the request's tenant is gone by the time the job runs.",
+    solution: "I built the scoping on ActiveSupport::CurrentAttributes rather than a raw thread-local, made the default behaviour raise when no tenant is set, and serialised the tenant into every job with GlobalID so it is restored before perform. Controller helpers resolve the tenant from the request in one line, and the install generator scaffolds the tenant model and initializer.",
+    results: "Published to RubyGems in July 2026 with CI on GitHub Actions and a full test suite. It powers the multi-tenant workspaces in RailsAI Kit and the client portals in the school platforms."
   }
 ]
 
 # Existing lab projects from the earlier portfolio: keep them, but group them.
-LAB_SLUGS = %w[crypcop-solana-token-scanner railsy-commerce this-is-that local-hub naijahomes].freeze
+LAB_SLUGS = %w[crypcop-solana-token-scanner railsy-commerce this-is-that local-hub].freeze
 LAB_RENAMES = { "Live ven" => "lvhs", "Roster" => "rosterflow" }.freeze
 
 LAB_RENAMES.each do |old_slug, new_slug|
@@ -261,6 +273,9 @@ end
 Project.where(project_type: "lab").order(:position).each_with_index { |pr, i| pr.update_columns(position: 20 + i) }
 Project.find_by(slug: "railsy-commerce")&.then { |pr| attach_shots!(pr) }
 Project.find_by(slug: "local-hub")&.then { |pr| attach_shots!(pr) }
+
+# Retired entries.
+Project.where(slug: "naijahomes").destroy_all
 
 # Placeholder testimonials seeded by the original template, never real clients.
 removed = Testimonial.where(author_name: [ "Alex Thompson", "Sarah Chen", "Michael Okonkwo" ]).destroy_all

@@ -34,11 +34,15 @@
   --color-hero-2: var(--ink-hero-2);
 }
 
-/* Dark (default): near-black, cool white type */
+/* Dark (default): deep graphite with blue, teal and plum washes behind the glass */
 :root, .dark {
   color-scheme: dark;
-  --bg: #07090d;
-  --bg-elev: #0d1117;
+  --bg: #0a0b12;
+  --bg-elev: #12141f;
+  --wash-1: #1b2d7a;
+  --wash-2: #0e4a57;
+  --wash-3: #4a1f63;
+  --wash-opacity: 0.55;
   --ink: #f3f5f8;
   --ink-hero: #f3f5f8;
   --ink-hero-2: #b7bfff;
@@ -46,7 +50,8 @@
   --ink-3: #6b7382;
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.16);
-  --card-bg: linear-gradient(150deg, #151c2b 0%, #0d1119 45%, #090c12 100%);
+  --card-bg: linear-gradient(150deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.035) 50%, rgba(255, 255, 255, 0.02) 100%);
+  --card-blur: 26px;
   --card-border: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05) 40%, rgba(91, 141, 239, 0.12) 100%);
   --card-halo: 0 0 0 1px rgba(91, 141, 239, 0.04), 0 24px 60px -28px rgba(0, 0, 0, 0.9), 0 0 48px -12px rgba(91, 141, 239, 0.12);
   --glass-fill: rgba(255, 255, 255, 0.045);
@@ -65,11 +70,15 @@
   --btn-fg: var(--bg);
 }
 
-/* Light: paper white, black type */
+/* Light: warm paper with periwinkle, peach and mint washes behind frosted white glass */
 .light {
   color-scheme: light;
-  --bg: #f7f6f3;
+  --bg: #f3f2ee;
   --bg-elev: #ffffff;
+  --wash-1: #b7c4ff;
+  --wash-2: #ffd2ba;
+  --wash-3: #bdeadf;
+  --wash-opacity: 0.85;
   --ink: #0b0d12;
   --ink-hero: #141a33;
   --ink-hero-2: #141a33;
@@ -77,11 +86,12 @@
   --ink-3: #8a919e;
   --line: rgba(11, 13, 18, 0.08);
   --line-strong: rgba(11, 13, 18, 0.16);
-  --card-bg: linear-gradient(150deg, #ffffff 0%, #fbfbfd 60%, #f3f5fb 100%);
-  --card-border: linear-gradient(160deg, rgba(255, 255, 255, 1), rgba(11, 13, 18, 0.08) 45%, rgba(47, 91, 255, 0.14) 100%);
-  --card-halo: 0 1px 2px rgba(11, 13, 18, 0.04), 0 24px 50px -30px rgba(20, 26, 60, 0.3), 0 0 40px -10px rgba(47, 91, 255, 0.10);
-  --glass-fill: rgba(255, 255, 255, 0.62);
-  --glass-fill-strong: rgba(255, 255, 255, 0.85);
+  --card-bg: linear-gradient(150deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.46) 60%, rgba(255, 255, 255, 0.38) 100%);
+  --card-blur: 30px;
+  --card-border: linear-gradient(160deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.55) 45%, rgba(120, 140, 230, 0.35) 100%);
+  --card-halo: 0 1px 2px rgba(20, 26, 60, 0.05), 0 30px 60px -32px rgba(40, 50, 120, 0.35);
+  --glass-fill: rgba(255, 255, 255, 0.5);
+  --glass-fill-strong: rgba(255, 255, 255, 0.78);
   --glass-stroke: rgba(255, 255, 255, 0.9);
   --glass-highlight: rgba(255, 255, 255, 1);
   --glass-sheen: rgba(255, 255, 255, 0.7);
@@ -89,10 +99,10 @@
   --glass-shadow: 0 1px 2px rgba(11, 13, 18, 0.05), 0 30px 60px -32px rgba(11, 13, 18, 0.25);
   --glow: rgba(91, 141, 239, 0.3);
   --accent: #22c55e;
-  --blue: #2f5bff;
-  --blue-fill: rgba(47, 91, 255, 0.08);
-  --blue-stroke: rgba(47, 91, 255, 0.22);
-  --btn-bg: linear-gradient(180deg, #5b7cff 0%, #3659e6 100%);
+  --blue: #3450c8;
+  --blue-fill: rgba(52, 80, 200, 0.10);
+  --blue-stroke: rgba(52, 80, 200, 0.24);
+  --btn-bg: linear-gradient(180deg, #202848 0%, #11162e 100%);
   --btn-fg: #ffffff;
 }
 
@@ -114,18 +124,17 @@
 /* legacy no-ops */
 .aurora, .noise, .grid-lines, .scroll-progress, .wallpaper, .marquee { display: none; }
 
-/* ═══════════════════════════ BACKDROP ═══════════════════════════ */
-.backdrop {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-  background:
-    radial-gradient(60% 50% at 78% 18%, rgba(120, 150, 200, 0.10) 0%, transparent 60%),
-    radial-gradient(40% 40% at 10% 90%, rgba(91, 141, 239, 0.06) 0%, transparent 60%);
-}
-.light .backdrop {
-  background:
-    radial-gradient(60% 50% at 78% 18%, rgba(170, 190, 225, 0.35) 0%, transparent 60%),
-    radial-gradient(40% 40% at 10% 90%, rgba(170, 190, 225, 0.25) 0%, transparent 60%);
-}
+/* ═══════════════════════════ BACKDROP WASHES ═══════════════════════════ */
+.backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: var(--bg); }
+.backdrop span { position: absolute; border-radius: 9999px; opacity: var(--wash-opacity); filter: blur(110px); will-change: transform; }
+.backdrop span:nth-child(1) { width: 58vw; height: 58vw; right: -18vw; top: -22vw; background: var(--wash-1); animation: wash-a 36s ease-in-out infinite; }
+.backdrop span:nth-child(2) { width: 46vw; height: 46vw; left: -16vw; top: 32vh; background: var(--wash-2); animation: wash-b 44s ease-in-out infinite; }
+.backdrop span:nth-child(3) { width: 50vw; height: 50vw; right: 6vw; bottom: -26vw; background: var(--wash-3); animation: wash-c 52s ease-in-out infinite; }
+.backdrop::after { content: ""; position: absolute; inset: 0; background: radial-gradient(90% 60% at 50% 50%, transparent 40%, color-mix(in oklab, var(--bg) 55%, transparent) 100%); }
+@keyframes wash-a { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(-6vw, 6vh) scale(1.08) } }
+@keyframes wash-b { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(7vw, -5vh) scale(1.05) } }
+@keyframes wash-c { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(-5vw, -7vh) scale(1.1) } }
+.dark .backdrop span { filter: blur(130px); }
 .glow-blob {
   position: absolute; width: 22rem; height: 22rem; border-radius: 9999px; pointer-events: none;
   background: radial-gradient(circle, var(--glow) 0%, transparent 65%);
@@ -138,9 +147,14 @@
   background: var(--card-bg) padding-box, var(--card-border) border-box;
   border: 1px solid transparent;
   border-radius: 1.25rem;
-  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--card-halo);
+  backdrop-filter: blur(var(--card-blur)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--card-blur)) saturate(1.5);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 rgba(0, 0, 0, 0.06), var(--card-halo);
   overflow: hidden;
 }
+.card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.22) 0%, transparent 38%, transparent 70%, rgba(255, 255, 255, 0.06) 100%); opacity: 0.6; }
+.dark .card::before { opacity: 0.35; }
 @utility card-lift { transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo); &:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 var(--glass-highlight), var(--card-halo), 0 0 60px -14px rgba(91, 141, 239, 0.22); } }
 
 @utility glass {
@@ -245,7 +259,7 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 10px 24px -12px rgba(0, 0, 0, 0.6);
   &:hover { transform: translateY(-1px); }
 }
-.light .btn-primary { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 12px 26px -10px rgba(54, 89, 230, 0.55); }
+.light .btn-primary { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 14px 28px -12px rgba(17, 22, 46, 0.55); }
 @utility btn-glass {
   background: var(--glass-fill); color: var(--ink); border-color: var(--line-strong);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
@@ -279,7 +293,8 @@
 .tech-tile {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem;
   padding: 1.1rem 0.6rem; border-radius: 1rem;
-  background: var(--card-bg); border: 1px solid var(--line);
+  background: var(--card-bg); border: 1px solid var(--glass-stroke);
+  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
   box-shadow: inset 0 1px 0 var(--glass-highlight);
   transition: transform 0.4s var(--ease-out-expo), border-color 0.3s;
 }
@@ -293,7 +308,7 @@
 /* ═══════════════════════════ NAV ═══════════════════════════ */
 .nav-shell { transition: background 0.3s, border-color 0.3s; border-bottom: 1px solid transparent; }
 .nav-scrolled .nav-shell { background: color-mix(in oklab, var(--bg) 75%, transparent); border-color: var(--line); backdrop-filter: blur(18px) saturate(1.3); -webkit-backdrop-filter: blur(18px) saturate(1.3); }
-.nav-group { display: flex; align-items: center; gap: 0.15rem; padding: 0.25rem; border-radius: 9999px; background: var(--glass-fill); border: 1px solid var(--line); }
+.nav-group { display: flex; align-items: center; gap: 0.15rem; padding: 0.25rem; border-radius: 9999px; background: var(--glass-fill); border: 1px solid var(--glass-stroke); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); box-shadow: inset 0 1px 0 var(--glass-highlight); }
 .nav-link { color: var(--ink-2); padding: 0.4rem 0.8rem; border-radius: 9999px; font-size: 0.82rem; font-weight: 500; transition: color 0.2s, background 0.2s; }
 .nav-link:hover { color: var(--ink); }
 .nav-link.is-active { color: var(--ink); background: var(--bg-elev); box-shadow: inset 0 1px 0 var(--glass-highlight), 0 1px 2px rgba(0,0,0,.15); }
@@ -301,6 +316,7 @@
 
 /* ═══════════════════════════ FRAMES ═══════════════════════════ */
 .shot, .browser-frame { border-radius: 0.85rem; overflow: hidden; background: var(--bg-elev); border: 1px solid var(--line-strong); box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.7); }
+.light .shot, .light .browser-frame { box-shadow: 0 30px 60px -30px rgba(40, 50, 120, 0.45); }
 .shot img, .browser-frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .browser-frame .bar { display: none; }
 .phone-frame { border-radius: 1.4rem; overflow: hidden; border: 1px solid var(--line-strong); background: var(--bg-elev); }
@@ -374,8 +390,45 @@ html.js [data-reveal].is-visible { opacity: 1; }
 .highlight .o, .highlight .ow { color: #ff7b72; } .highlight .p { color: #c9d1d9; }
 .highlight .m, .highlight .mi, .highlight .mf, .highlight .mh, .highlight .mo { color: #79c0ff; } .highlight .w { color: #c9d1d9; }
 
-.admin-shell { --bg: #07090d; }
-trix-editor { min-height: 12rem; color: var(--ink); }
+/* ═══════════════════════════ ADMIN ═══════════════════════════
+   The admin views still use the original surface-* / text-white utilities.
+   These scoped rules map them onto the design system so every admin page
+   picks up the glass look without rewriting each template. */
+.admin-sidebar { background: color-mix(in oklab, var(--bg) 70%, transparent); border-right: 1px solid var(--line); backdrop-filter: blur(22px) saturate(1.4); -webkit-backdrop-filter: blur(22px) saturate(1.4); }
+.admin-topbar { background: color-mix(in oklab, var(--bg) 65%, transparent); border-bottom: 1px solid var(--line); backdrop-filter: blur(18px) saturate(1.3); -webkit-backdrop-filter: blur(18px) saturate(1.3); }
+.admin-nav-link { color: var(--ink-2); }
+.admin-nav-link:hover { color: var(--ink); background: var(--glass-fill); }
+.admin-nav-link.is-active { color: var(--ink); background: var(--glass-fill-strong); box-shadow: inset 0 1px 0 var(--glass-highlight), 0 0 0 1px var(--glass-stroke); }
+
+.admin-content .glass { background: var(--card-bg) padding-box, var(--card-border) border-box; border: 1px solid transparent; border-radius: 1.25rem; box-shadow: inset 0 1px 0 var(--glass-highlight), var(--card-halo); }
+.admin-content .glass::before, .admin-content .glass::after { display: none; }
+.admin-content :is(.text-white, .text-surface-100) { color: var(--ink) !important; }
+.admin-content :is(.text-surface-200, .text-surface-300, .text-surface-400) { color: var(--ink-2) !important; }
+.admin-content :is(.text-surface-500, .text-surface-600) { color: var(--ink-3) !important; }
+.admin-content :is(.text-primary-400, .text-primary-300) { color: var(--blue) !important; }
+.admin-content :is(.bg-surface-800, .bg-surface-900, .bg-surface-950) { background: var(--glass-fill) !important; }
+.admin-content :is(.border-surface-700, .border-surface-800, .border-surface-900) { border-color: var(--line) !important; }
+.admin-content .bg-primary-600, .admin-content input[type="submit"] {
+  background: var(--btn-bg) !important; color: var(--btn-fg) !important; border-radius: 9999px !important; font-weight: 500;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 24px -12px rgba(0, 0, 0, 0.6);
+}
+.admin-content .bg-primary-600:hover { opacity: 0.92; }
+.admin-content :is(input[type="text"], input[type="email"], input[type="url"], input[type="number"], input[type="password"], input[type="date"], input[type="datetime-local"], textarea, select) {
+  background: var(--glass-fill) !important; border: 1px solid var(--line-strong) !important; color: var(--ink) !important; border-radius: 0.85rem !important;
+}
+.admin-content :is(input, textarea, select):focus { outline: none !important; border-color: var(--ink-3) !important; box-shadow: 0 0 0 3px color-mix(in oklab, var(--ink) 8%, transparent) !important; }
+.admin-content input[type="file"] { color: var(--ink-2); }
+.admin-content table { width: 100%; }
+.admin-content thead th { color: var(--ink-3) !important; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; }
+.admin-content tbody tr { border-color: var(--line) !important; transition: background 0.15s; }
+.admin-content tbody tr:hover { background: rgba(255, 255, 255, 0.025); }
+.admin-content :is(.text-red-400, .text-red-300) { color: #fb7185 !important; background: transparent !important; }
+.admin-content :is(.text-emerald-400, .text-emerald-300) { color: #34d399 !important; }
+.admin-content .rounded-lg:not(table):not(tr):not(td) { border-radius: 0.85rem; }
+.admin-content h2 { letter-spacing: -0.02em; }
+.admin-content trix-toolbar .trix-button-group { border-color: var(--line) !important; }
+.admin-content trix-toolbar .trix-button { background: var(--glass-fill); border-color: var(--line) !important; filter: invert(0.9); }
+trix-editor { min-height: 12rem; color: var(--ink); background: var(--glass-fill); border: 1px solid var(--line-strong) !important; border-radius: 0.85rem !important; }
 
 /* ═══════════════════════════ TABLET MOUNT / ARROW / LOGO STRIP ═══════════════════════════ */
 .tablet { position: relative; perspective: 1600px; }

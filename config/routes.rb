@@ -48,7 +48,10 @@ Rails.application.routes.draw do
     resource :profile, only: [ :edit, :update ]
 
     resources :projects do
-      member { patch :reorder }
+      member do
+        patch :reorder
+        delete :purge_image
+      end
     end
 
     resources :experiences

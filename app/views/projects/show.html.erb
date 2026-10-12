@@ -16,7 +16,7 @@
             <div class="mt-6 flex flex-wrap gap-1.5" data-reveal="fade" data-reveal-delay="0.1"><% p.tech_stack.first(5).each do |t| %><span class="chip"><%= t %></span><% end %></div>
           <% end %>
           <div class="mt-8 flex flex-wrap gap-3" data-reveal="fade" data-reveal-delay="0.15">
-            <% if p.live? %><a href="<%= p.live_url %>" target="_blank" rel="noopener" class="btn btn-primary" data-controller="magnetic">View Live Project <span aria-hidden="true">→</span></a><% end %>
+            <% if p.live? %><a href="<%= p.live_url %>" target="_blank" rel="noopener" class="btn btn-primary" data-controller="magnetic"><%= p.rubygem_name.present? ? "View on RubyGems" : "View Live Project" %> <span aria-hidden="true">→</span></a><% end %>
             <% if p.github_url.present? %><a href="<%= p.github_url %>" target="_blank" rel="noopener" class="btn btn-glass">Source code</a><% end %>
           </div>
         </div>
@@ -56,6 +56,20 @@
       </div>
 
       <aside class="lg:col-span-5 space-y-5 lg:sticky lg:top-24 self-start">
+        <% if p.rubygem_name.present? && (gem = RubygemsService.info(p.rubygem_name)) %>
+          <div class="card p-6" data-reveal="right">
+            <div class="flex items-center justify-between gap-4">
+              <h2 class="font-semibold text-ink">On RubyGems</h2>
+              <a href="https://rubygems.org/gems/<%= gem[:name] %>" target="_blank" rel="noopener" class="text-sm text-ink-2 hover:text-ink">rubygems.org ↗</a>
+            </div>
+            <dl class="mt-4 grid grid-cols-3 gap-3">
+              <div class="rounded-xl border border-line p-3"><dd class="display text-xl text-ink">v<%= gem[:version] %></dd><dt class="text-xs text-ink-3 mt-0.5">Latest version</dt></div>
+              <div class="rounded-xl border border-line p-3"><dd class="display text-xl text-ink"><%= number_to_human(gem[:downloads], format: "%n%u", units: { thousand: "k", million: "M" }) %></dd><dt class="text-xs text-ink-3 mt-0.5">Downloads</dt></div>
+              <div class="rounded-xl border border-line p-3"><dd class="display text-xl text-ink"><%= gem[:licenses].first || "MIT" %></dd><dt class="text-xs text-ink-3 mt-0.5">Licence</dt></div>
+            </dl>
+            <pre class="mt-4 rounded-xl border border-line bg-elev/60 px-4 py-3 text-sm text-ink font-mono overflow-x-auto"><code>gem "<%= gem[:name] %>"</code></pre>
+          </div>
+        <% end %>
         <% if p.tech_stack.any? %>
           <div class="card p-6" data-reveal="right">
             <h2 class="font-semibold text-ink">Tech Stack</h2>
