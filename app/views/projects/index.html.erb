@@ -16,7 +16,7 @@
 
 <section class="pb-20">
   <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
-    <%= turbo_frame_tag "projects" do %>
+    <%= turbo_frame_tag "projects", target: "_top" do %>
       <% if @projects.any? %>
         <% lead, *rest = @projects.to_a %>
         <div data-controller="reveal">

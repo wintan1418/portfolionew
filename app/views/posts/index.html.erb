@@ -24,7 +24,7 @@
 
 <section class="pb-20">
   <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
-    <%= turbo_frame_tag "posts" do %>
+    <%= turbo_frame_tag "posts", target: "_top" do %>
       <% if @posts.any? %>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-3" data-controller="reveal">
           <% @posts.each_with_index do |post, i| %>
