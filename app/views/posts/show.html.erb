@@ -10,94 +10,55 @@
   }) %>
 <% end %>
 
-<section class="py-24">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Back link -->
-    <div class="mb-8 animate-fade-in">
-      <%= link_to blog_path, class: "inline-flex items-center gap-2 text-surface-500 hover:text-white transition-colors text-xs font-mono uppercase tracking-wider" do %>
-        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
-        Back to Blog
-      <% end %>
-    </div>
-
-    <!-- Cover Image -->
-    <% if @post.cover_image.attached? %>
-      <div class="aspect-video rounded-2xl overflow-hidden mb-8 animate-fade-in-up">
-        <%= image_tag @post.cover_image, class: "w-full h-full object-cover" %>
-      </div>
-    <% end %>
-
-    <!-- Header -->
-    <div class="animate-fade-in-up" style="animation-delay: 0.1s; opacity: 0;">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="text-xs font-mono text-surface-500 uppercase tracking-wider"><%= @post.published_at&.strftime("%B %d, %Y") %></span>
-        <% if @post.reading_time %>
-          <span class="text-xs font-mono text-surface-500 uppercase tracking-wider">&middot; <%= @post.reading_time %> min read</span>
-        <% end %>
-        <% if @post.category %>
-          <span class="px-2.5 py-0.5 rounded-full text-xs font-mono uppercase tracking-wider" style="background: <%= @post.category.color %>20; color: <%= @post.category.color %>;"><%= @post.category.name %></span>
-        <% end %>
-      </div>
-
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight"><%= @post.title %></h1>
-
+<article>
+  <section class="pt-32 pb-10 sm:pt-40" data-controller="reveal">
+    <div class="max-w-3xl mx-auto px-5 sm:px-6">
+      <p class="eyebrow" data-reveal="fade"><%= link_to "Writing", blog_path, class: "hover:text-ink" %><% if @post.category %> / <%= @post.category.name %><% end %> · <%= @post.published_at&.strftime("%B %d, %Y") %><% if @post.reading_time %> · <%= @post.reading_time %> min read<% end %></p>
+      <h1 class="display-serif text-4xl sm:text-6xl mt-5" data-reveal="up"><%= @post.title %></h1>
       <% if @post.excerpt.present? %>
-        <p class="mt-4 text-lg text-surface-500 leading-relaxed"><%= @post.excerpt %></p>
+        <p class="mt-5 text-lg text-ink-2 leading-relaxed" data-reveal="up" data-reveal-delay="0.05"><%= @post.excerpt %></p>
       <% end %>
     </div>
+  </section>
 
-    <!-- Article Body -->
-    <div class="mt-10 prose prose-invert prose-primary max-w-none blog-content animate-fade-in-up" style="animation-delay: 0.3s; opacity: 0;"
-         data-controller="highlight">
-      <% if @post.content_markdown.present? %>
-        <%= render_markdown(@post.content_markdown) %>
-      <% else %>
-        <%= @post.body %>
-      <% end %>
+  <% if @post.cover_image.attached? %>
+    <section class="pb-12" data-controller="reveal">
+      <div class="max-w-5xl mx-auto px-5 sm:px-6">
+        <div class="card p-3" data-reveal="scale"><div class="shot aspect-[16/8]"><%= image_tag @post.cover_image, loading: "eager" %></div></div>
+      </div>
+    </section>
+  <% end %>
+
+  <section class="relative pb-20">
+    <div class="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8">
+      <div class="card p-6 sm:p-10"><div class="blog-content" data-controller="highlight">
+        <% if @post.content_markdown.present? %>
+          <%= render_markdown(@post.content_markdown) %>
+        <% else %>
+          <%= @post.body %>
+        <% end %>
+      </div>
+
+      </div>
+      <div class="mt-8 flex flex-wrap items-center justify-between gap-4 px-2">
+        <div class="text-sm text-ink-3">
+          <% if @post.category %>Filed under <%= link_to @post.category.name, blog_category_path(@post.category.slug), class: "text-ink hover:underline underline-offset-4" %><% end %>
+        </div>
+        <%= render "posts/like_button", post: @post, liked: @liked %>
+      </div>
+
+      <%= render "posts/comments_section", post: @post, comments: @comments, comment: @comment, liked: @liked %>
     </div>
+  </section>
 
-    <!-- Share & Tags -->
-    <div class="mt-12 pt-8 border-t border-surface-900">
-      <div class="flex items-center justify-between">
-        <div class="text-xs font-mono text-surface-500 uppercase tracking-wider">
-          <% if @post.category %>
-            Filed under
-            <%= link_to @post.category.name, blog_category_path(@post.category.slug), class: "text-primary-400 hover:text-primary-300 transition-colors" %>
-          <% end %>
+  <% if @related_posts&.any? %>
+    <section class="py-10" data-controller="reveal">
+      <div class="max-w-5xl mx-auto px-5 sm:px-6">
+        <h2 class="eyebrow mb-6" data-reveal="fade">Keep reading</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-reveal="stagger">
+          <% @related_posts.each do |post| %><%= render "components/blog_card", post: post %><% end %>
         </div>
       </div>
-    </div>
-
-    <!-- Comments Section -->
-    <%= render "posts/comments_section", post: @post, comments: @comments, comment: @comment, liked: @liked %>
-
-    <!-- Related Posts -->
-    <% if @related_posts&.any? %>
-      <div class="mt-16" data-controller="scroll-reveal">
-        <p class="text-xs font-mono text-primary-400 uppercase tracking-[0.2em] mb-3 reveal">Related</p>
-        <h2 class="text-3xl font-extrabold text-white section-line mb-8 reveal">Related Posts</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <% @related_posts.each do |post| %>
-            <div class="reveal">
-              <%= render "components/blog_card", post: post %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-
-    <!-- Newsletter CTA -->
-    <div class="mt-16 glass-hover rounded-2xl p-8 text-center" data-controller="scroll-reveal">
-      <div class="reveal">
-        <h3 class="text-xl font-bold text-white">Enjoyed this post?</h3>
-        <p class="mt-2 text-surface-500 text-sm">Subscribe to get notified about new articles.</p>
-        <form action="/subscribe" method="post" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto" data-turbo="true">
-          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-          <input type="email" name="subscriber[email]" placeholder="your@email.com" required
-                 class="flex-1 px-4 py-2.5 rounded-full bg-surface-950 border border-surface-800 text-white placeholder-surface-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm">
-          <button type="submit" class="px-5 py-2.5 rounded-full bg-primary-600 text-white font-medium hover:bg-primary-500 transition-colors text-sm whitespace-nowrap">Subscribe</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
+  <% end %>
+</article>

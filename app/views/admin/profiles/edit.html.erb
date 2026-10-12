@@ -94,6 +94,26 @@
       <%= f.label :availability_text, class: "block text-sm font-medium text-surface-300 mb-1" %>
       <%= f.text_field :availability_text, placeholder: "e.g. Available for freelance work", class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
     </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+      <div>
+        <%= f.label :years_experience, "Years (override)", class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.number_field :years_experience, placeholder: "auto", class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+      <div>
+        <%= f.label :projects_delivered, "Projects (override)", class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.number_field :projects_delivered, placeholder: "auto", class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+      <div>
+        <%= f.label :github_repos_count, "GitHub repos", class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.number_field :github_repos_count, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+      <div>
+        <%= f.label :github_stars_count, "GitHub stars", class: "block text-sm font-medium text-surface-300 mb-1" %>
+        <%= f.number_field :github_stars_count, class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
+      </div>
+    </div>
+    <p class="text-xs text-surface-500">GitHub numbers refresh daily from the API. Leave the overrides blank to compute years from your experience dates and projects from the catalogue.</p>
   </fieldset>
 
   <!-- Avatar & Resume -->

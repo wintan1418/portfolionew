@@ -1,0 +1,17 @@
+<%# locals: (image:, url: nil, alt: "", css: "", loading: "lazy", lightbox: false, ratio: "aspect-[16/10]") %>
+<div class="shot <%= css %>">
+  <% if image.respond_to?(:attached?) ? image.attached? : image.present? %>
+    <% src = image.respond_to?(:attached?) ? url_for(image) : image %>
+    <% if lightbox %>
+      <a href="<%= src %>" data-lightbox-src="<%= src %>" data-lightbox-caption="<%= alt %>" data-action="lightbox#open" class="block cursor-zoom-in">
+        <%= image_tag src, alt: alt, loading: loading, class: "#{ratio} w-full object-cover object-top" %>
+      </a>
+    <% else %>
+      <%= image_tag src, alt: alt, loading: loading, class: "#{ratio} w-full object-cover object-top" %>
+    <% end %>
+  <% else %>
+    <div class="<%= ratio %> w-full grid place-items-center bg-elev">
+      <span class="text-4xl font-semibold text-ink-3/40 select-none"><%= alt.to_s.first(2).upcase %></span>
+    </div>
+  <% end %>
+</div>

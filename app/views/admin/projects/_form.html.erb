@@ -74,6 +74,24 @@
     </div>
 
     <div>
+      <%= f.label :images, "Gallery images (screenshots, you can select several)", class: "block text-sm font-medium text-surface-300 mb-1" %>
+      <% if project.images.attached? %>
+        <div class="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-3">
+          <% project.images.each do |image| %>
+            <div class="relative group rounded-lg overflow-hidden border border-surface-800">
+              <%= image_tag image, class: "w-full h-24 object-cover" %>
+              <%= button_to "Remove", purge_image_admin_project_path(project, attachment_id: image.id), method: :delete,
+                    form: { data: { turbo_confirm: "Remove this image?" } },
+                    class: "absolute inset-x-0 bottom-0 bg-black/70 text-[11px] text-red-300 py-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <%= f.file_field :images, multiple: true, accept: "image/*", class: "w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:bg-surface-700 file:text-surface-300" %>
+      <p class="mt-1 text-xs text-surface-500">New uploads are added to the existing gallery.</p>
+    </div>
+
+    <div>
       <%= f.label :body, class: "block text-sm font-medium text-surface-300 mb-1" %>
       <%= f.rich_text_area :body, class: "w-full rounded-lg bg-surface-800 border border-surface-700 text-white text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500" %>
     </div>

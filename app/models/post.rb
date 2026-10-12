@@ -40,9 +40,9 @@ class Post < ApplicationRecord
   def calculate_reading_time
     text = if content_markdown.present?
              content_markdown
-           elsif body.present?
+    elsif body.present?
              body.to_plain_text
-           end
+    end
     if text.present?
       word_count = text.split.size
       self.reading_time = (word_count / 200.0).ceil
