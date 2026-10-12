@@ -20,10 +20,12 @@
             <% if p.github_url.present? %><a href="<%= p.github_url %>" target="_blank" rel="noopener" class="btn btn-glass">Source code</a><% end %>
           </div>
         </div>
-        <div class="lg:col-span-7" data-reveal="right">
-          <div class="tilt-3d">
-            <div class="shot aspect-[16/10] cursor-zoom-in" data-lightbox-src="<%= url_for(p.cover_image) if p.cover_image.attached? %>" data-lightbox-caption="<%= p.title %>" data-action="click->lightbox#open">
-              <% if p.cover_image.attached? %><%= image_tag p.cover_image, alt: p.title, loading: "eager" %><% end %>
+        <div class="lg:col-span-7 lg:pl-8" data-reveal="right">
+          <div class="tablet">
+            <div class="mount">
+              <div class="shot aspect-[16/10] cursor-zoom-in" data-lightbox-src="<%= url_for(p.cover_image) if p.cover_image.attached? %>" data-lightbox-caption="<%= p.title %>" data-action="click->lightbox#open">
+                <% if p.cover_image.attached? %><%= image_tag p.cover_image, alt: p.title, loading: "eager" %><% end %>
+              </div>
             </div>
           </div>
         </div>
