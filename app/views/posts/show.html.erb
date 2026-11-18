@@ -10,44 +10,69 @@
   }) %>
 <% end %>
 
-<article>
-  <section class="pt-32 pb-10 sm:pt-40" data-controller="reveal">
+<% content_for(:default_theme) { "light" } %>
+<article class="reading">
+  <header class="reading-head pt-32 pb-10 sm:pt-40" data-controller="reveal">
     <div class="max-w-3xl mx-auto px-5 sm:px-6">
-      <p class="eyebrow" data-reveal="fade"><%= link_to "Writing", blog_path, class: "hover:text-ink" %><% if @post.category %> / <%= @post.category.name %><% end %> · <%= @post.published_at&.strftime("%B %d, %Y") %><% if @post.reading_time %> · <%= @post.reading_time %> min read<% end %></p>
-      <h1 class="display-serif text-4xl sm:text-6xl mt-5" data-reveal="up"><%= @post.title %></h1>
+      <p class="eyebrow" data-reveal="fade"><%= link_to "Writing", blog_path %><% if @post.category %> / <%= link_to @post.category.name, blog_category_path(@post.category.slug) %><% end %></p>
+      <h1 class="reading-title display-serif text-4xl sm:text-6xl mt-5" data-reveal="up"><%= @post.title %></h1>
       <% if @post.excerpt.present? %>
-        <p class="mt-5 text-lg text-ink-2 leading-relaxed" data-reveal="up" data-reveal-delay="0.05"><%= @post.excerpt %></p>
+        <p class="reading-lede mt-5" data-reveal="up" data-reveal-delay="0.05"><%= @post.excerpt %></p>
       <% end %>
+      <div class="reading-byline mt-7" data-reveal="fade" data-reveal-delay="0.1">
+        <% if current_profile&.avatar&.attached? %>
+          <%= image_tag current_profile.avatar, class: "reading-avatar", alt: "" %>
+        <% end %>
+        <div>
+          <strong><%= current_profile&.full_name || "Wintan" %></strong>
+          <div><%= @post.published_at&.strftime("%B %-d, %Y") %><% if @post.reading_time %> · <%= @post.reading_time %> min read<% end %></div>
+        </div>
+      </div>
     </div>
-  </section>
+  </header>
 
   <% if @post.cover_image.attached? %>
-    <section class="pb-12" data-controller="reveal">
-      <div class="max-w-5xl mx-auto px-5 sm:px-6">
-        <div class="card p-3" data-reveal="scale"><div class="shot aspect-[16/8]"><%= image_tag @post.cover_image, loading: "eager" %></div></div>
+    <section class="pb-10" data-controller="reveal">
+      <div class="max-w-4xl mx-auto px-5 sm:px-6">
+        <figure class="reading-cover" data-reveal="scale"><%= image_tag @post.cover_image, loading: "eager", alt: "" %></figure>
       </div>
     </section>
   <% end %>
 
   <section class="relative pb-20">
-    <div class="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8">
-      <div class="card p-6 sm:p-10"><div class="blog-content" data-controller="highlight">
-        <% if @post.content_markdown.present? %>
-          <%= render_markdown(@post.content_markdown) %>
-        <% else %>
-          <%= @post.body %>
-        <% end %>
-      </div>
-
-      </div>
-      <div class="mt-8 flex flex-wrap items-center justify-between gap-4 px-2">
-        <div class="text-sm text-ink-3">
-          <% if @post.category %>Filed under <%= link_to @post.category.name, blog_category_path(@post.category.slug), class: "text-ink hover:underline underline-offset-4" %><% end %>
+    <div class="max-w-3xl mx-auto px-3 sm:px-6">
+      <div class="reading-sheet">
+        <div class="blog-content" data-controller="highlight">
+          <% if @post.content_markdown.present? %>
+            <%= render_markdown(@post.content_markdown) %>
+          <% else %>
+            <%= @post.body %>
+          <% end %>
         </div>
-        <%= render "posts/like_button", post: @post, liked: @liked %>
+
+        <footer class="reading-foot max-w-[70ch] mx-auto">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="text-sm">
+              <% if @post.category %>Filed under <%= link_to @post.category.name, blog_category_path(@post.category.slug), class: "underline underline-offset-4" %><% end %>
+            </div>
+            <%= render "posts/like_button", post: @post, liked: @liked %>
+          </div>
+          <div class="reading-author mt-6">
+            <% if current_profile&.avatar&.attached? %>
+              <%= image_tag current_profile.avatar, class: "reading-avatar !w-12 !h-12", alt: "" %>
+            <% end %>
+            <div>
+              <div class="name">Written by <%= current_profile&.full_name || "Wintan" %></div>
+              <% if current_profile&.headline.present? %><p class="mt-1"><%= current_profile.headline %></p><% end %>
+              <p class="mt-2"><%= link_to "More writing", blog_path, class: "underline underline-offset-4" %> · <%= link_to "Work with me", contact_path, class: "underline underline-offset-4" %></p>
+            </div>
+          </div>
+        </footer>
       </div>
 
-      <%= render "posts/comments_section", post: @post, comments: @comments, comment: @comment, liked: @liked %>
+      <div class="px-2">
+        <%= render "posts/comments_section", post: @post, comments: @comments, comment: @comment, liked: @liked %>
+      </div>
     </div>
   </section>
 

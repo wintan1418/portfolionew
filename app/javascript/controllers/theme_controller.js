@@ -1,9 +1,25 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Theme lives on <html class="dark|light">. Dark is the default.
+// Theme lives on <html class="dark|light">. A theme picked with the toggle
+// wins; otherwise each page's default (body data-default-theme, dark for most
+// pages, light for the blog) applies, also after Turbo navigations.
 export default class extends Controller {
   connect() {
-    this.apply(localStorage.getItem("theme") || "dark")
+    this.sync = () => this.apply(this.preferred())
+    document.addEventListener("turbo:load", this.sync)
+    this.sync()
+  }
+
+  disconnect() {
+    document.removeEventListener("turbo:load", this.sync)
+  }
+
+  preferred() {
+    try {
+      const saved = localStorage.getItem("theme")
+      if (saved === "light" || saved === "dark") return saved
+    } catch {}
+    return document.body?.dataset.defaultTheme || "dark"
   }
 
   toggle() {

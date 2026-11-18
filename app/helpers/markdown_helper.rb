@@ -8,6 +8,14 @@ module MarkdownHelper
     end
   end
 
+  # Wide tables scroll sideways inside their own box on phones.
+  module TableWrap
+    def table(header, body)
+      %(<div class="table-wrap"><table><thead>#{header}</thead><tbody>#{body}</tbody></table></div>)
+    end
+  end
+  RougeRenderer.include(TableWrap)
+
   def render_markdown(text)
     return "" if text.blank?
 

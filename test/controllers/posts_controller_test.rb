@@ -18,6 +18,21 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "a post reads on a solid sheet, light by default, with scrollable tables" do
+    @published_post.update!(content_markdown: "Intro\n\n| Layer | Tool |\n| --- | --- |\n| App | Rails |\n")
+    get blog_post_url(slug: @published_post.slug), headers: @headers
+    assert_response :success
+    assert_select "html.light"
+    assert_select "body[data-default-theme=light]"
+    assert_select ".reading .reading-sheet .blog-content .table-wrap table thead th", text: "Layer"
+    assert_select ".reading-foot .reading-author"
+  end
+
+  test "other pages keep the dark default" do
+    get root_url, headers: @headers
+    assert_select "html.dark"
+  end
+
   test "should not show draft post" do
     get blog_post_url(slug: @draft_post.slug), headers: @headers
     assert_response :not_found
