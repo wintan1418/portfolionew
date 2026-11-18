@@ -283,6 +283,7 @@
 }
 .light .chip { background: linear-gradient(180deg, #ffffff, #f3f5fb); box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(11, 13, 18, 0.04); }
 @utility chip-active { color: var(--bg); background: var(--ink); border-color: var(--ink); &:hover { color: var(--bg); } }
+.light .chip.chip-active, .light .chip-active { background: var(--ink); color: var(--bg); box-shadow: none; }
 
 @utility icon-tile {
   display: inline-flex; align-items: center; justify-content: center;
@@ -461,3 +462,91 @@ trix-editor { min-height: 12rem; color: var(--ink); background: var(--glass-fill
 .tech-tile span { overflow-wrap: anywhere; text-align: center; }
 @media (max-width: 1023px) { .tablet .mount { transform: rotateY(-8deg) rotateX(3deg); } }
 @media (max-width: 639px) { .tablet .mount { transform: none; padding: 0.45rem; } .tablet::after { display: none; } }
+
+/* ═══════════════════════════ READING (blog posts) ═══════════════════════════
+   A solid, warm sheet instead of glass: glass over the ambient washes turned
+   grey and the grey body text sank into it. Body text is near-white on warm
+   charcoal (dark) or near-black on warm paper (light). */
+:root, .dark {
+  --read-sheet: #1c1a17;
+  --read-ink: #ebe6de;
+  --read-head: #faf7f2;
+  --read-muted: #b5aea3;
+  --read-line: rgba(255, 244, 228, 0.12);
+  --read-tint: rgba(255, 244, 228, 0.045);
+  --read-link: #7dd3b0;
+  --read-inline: rgba(255, 244, 228, 0.09);
+  --read-code: #12110f;
+  --read-shadow: 0 30px 70px -40px rgba(0, 0, 0, 0.9);
+}
+.light {
+  --read-sheet: #fffdf9;
+  --read-ink: #24221e;
+  --read-head: #0f0e0c;
+  --read-muted: #5c574f;
+  --read-line: rgba(40, 30, 15, 0.12);
+  --read-tint: rgba(40, 30, 15, 0.035);
+  --read-link: #075a40;
+  --read-inline: rgba(40, 30, 15, 0.06);
+  --read-code: #17181c;
+  --read-shadow: 0 1px 2px rgba(40, 30, 15, 0.05), 0 30px 60px -40px rgba(40, 30, 15, 0.35);
+}
+
+.reading-head .eyebrow { color: var(--read-muted); }
+.reading-head .eyebrow a { color: var(--read-muted); text-decoration: none; }
+.reading-head .eyebrow a:hover { color: var(--read-head); }
+.reading-title { color: var(--read-head); }
+.reading-lede { color: var(--read-muted); font-size: 1.15rem; line-height: 1.65; }
+.reading-byline { display: flex; align-items: center; gap: 0.75rem; color: var(--read-muted); font-size: 0.9rem; }
+.reading-byline strong { color: var(--read-head); font-weight: 600; }
+.reading-avatar { width: 2.5rem; height: 2.5rem; border-radius: 9999px; object-fit: cover; border: 1px solid var(--read-line); background: var(--read-tint); flex: none; }
+
+.reading-cover { border-radius: 1.1rem; overflow: hidden; border: 1px solid var(--read-line); background: #fff; box-shadow: var(--read-shadow); }
+.reading-cover img { display: block; width: 100%; height: auto; }
+
+.reading-sheet { background: var(--read-sheet); border: 1px solid var(--read-line); border-radius: 1.25rem; box-shadow: var(--read-shadow); padding: 1.5rem 1.25rem; }
+@media (min-width: 640px) { .reading-sheet { padding: 3rem 3.25rem; } }
+
+.reading .blog-content { color: var(--read-ink); font-size: 1.0625rem; line-height: 1.75; max-width: 70ch; margin: 0 auto; }
+@media (min-width: 640px) { .reading .blog-content { font-size: 1.125rem; } }
+.reading .blog-content > :first-child { margin-top: 0; }
+.reading .blog-content p { margin: 0 0 1.25em; }
+.reading .blog-content :is(h2, h3, h4) { color: var(--read-head); font-weight: 650; letter-spacing: -0.02em; line-height: 1.25; }
+.reading .blog-content h2 { font-size: 1.55rem; margin: 2em 0 0.65em; padding-top: 1.1em; border-top: 1px solid var(--read-line); }
+.reading .blog-content h3 { font-size: 1.2rem; margin: 1.8em 0 0.5em; }
+.reading .blog-content strong { color: var(--read-head); font-weight: 650; }
+.reading .blog-content a { color: var(--read-link); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--read-link) 45%, transparent); }
+.reading .blog-content a:hover { text-decoration-color: var(--read-link); }
+.reading .blog-content :is(ul, ol) { padding-left: 1.35em; margin: 0 0 1.35em; }
+.reading .blog-content ul { list-style: disc; }
+.reading .blog-content ol { list-style: decimal; }
+.reading .blog-content li { margin-bottom: 0.55em; padding-left: 0.2em; }
+.reading .blog-content li::marker { color: var(--read-muted); }
+.reading .blog-content blockquote { margin: 1.8em 0; padding: 0.9em 1.2em; border-left: 3px solid var(--read-link); background: var(--read-tint); border-radius: 0 0.75rem 0.75rem 0; color: var(--read-ink); font-style: italic; }
+.reading .blog-content blockquote p:last-child { margin-bottom: 0; }
+.reading .blog-content hr { border: 0; height: 1px; background: var(--read-line); margin: 2.5em 0; }
+.reading .blog-content img { border-radius: 0.85rem; border: 1px solid var(--read-line); margin: 1.8em 0; }
+
+/* Inline code: a soft chip in the text colour. */
+.reading .blog-content :not(pre) > code { font-family: var(--font-mono); font-size: 0.84em; padding: 0.14em 0.4em; border-radius: 0.38rem; background: var(--read-inline); border: 1px solid var(--read-line); color: var(--read-head); white-space: break-spaces; overflow-wrap: anywhere; }
+
+/* Code blocks stay dark in both themes. */
+.reading .blog-content .code-block { margin: 1.8em 0; border-radius: 0.9rem; overflow: hidden; background: var(--read-code); border: 1px solid rgba(255, 255, 255, 0.08); }
+.reading .blog-content .code-lang { color: #a7b0ba; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.reading .blog-content .code-block pre { margin: 0; padding: 1.1rem 1.25rem; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; }
+.reading .blog-content .code-block code { background: none; border: 0; padding: 0; color: #e6edf3; font-size: inherit; white-space: pre; }
+
+/* Tables: own scroll box, tinted header, light zebra. */
+.reading .blog-content .table-wrap { margin: 1.8em 0; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--read-line); border-radius: 0.85rem; }
+.reading .blog-content table { width: 100%; border-collapse: collapse; font-size: 0.95rem; line-height: 1.5; margin: 0; }
+.reading .blog-content thead th { background: var(--read-tint); color: var(--read-head); font-weight: 650; text-align: left; white-space: nowrap; }
+.reading .blog-content :is(th, td) { padding: 0.7rem 0.95rem; border-bottom: 1px solid var(--read-line); vertical-align: top; color: var(--read-ink); }
+.reading .blog-content tbody tr:nth-child(even) td { background: var(--read-tint); }
+.reading .blog-content tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 639px) { .reading .blog-content table { min-width: 34rem; } }
+
+.reading-foot { border-top: 1px solid var(--read-line); margin-top: 2.5rem; padding-top: 1.5rem; color: var(--read-muted); }
+.reading-foot a { color: var(--read-head); }
+.reading-author { display: flex; gap: 1rem; align-items: flex-start; padding: 1.25rem; border-radius: 1rem; background: var(--read-tint); border: 1px solid var(--read-line); }
+.reading-author .name { color: var(--read-head); font-weight: 650; }
+.reading-author p { color: var(--read-muted); font-size: 0.95rem; line-height: 1.6; }

@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" class="dark" data-controller="theme">
+<%# Pages can ask for a default theme (the blog reads best on light paper).
+    A theme the visitor picked with the toggle always wins. %>
+<% default_theme = content_for?(:default_theme) ? yield(:default_theme).strip : "dark" %>
+<html lang="en" class="<%= default_theme %>" data-controller="theme">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -16,7 +19,7 @@
 
     <script>
       // Apply the saved theme before first paint to avoid a flash.
-      try { var t = localStorage.getItem("theme"); if (t === "light") { document.documentElement.classList.replace("dark", "light"); } } catch (e) {}
+      try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") { var h = document.documentElement; h.classList.remove("dark", "light"); h.classList.add(t); } } catch (e) {}
     </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,6 +37,7 @@
   </head>
 
   <body class="bg-canvas text-ink min-h-screen antialiased font-sans overflow-x-hidden"
+        data-default-theme="<%= default_theme %>"
         data-controller="glass turbo-transitions">
 
     <!-- Ambient backdrop -->
